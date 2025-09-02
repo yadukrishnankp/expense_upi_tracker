@@ -1,0 +1,16 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'login_event.freezed.dart';
+
+@freezed
+sealed class LoginEvent with _$LoginEvent {
+  const factory LoginEvent.login({
+    required String email,
+    required String password,
+  }) = LoginSubmitted;
+
+  const factory LoginEvent.validateEmail(String email) = ValidateEmail;
+
+  const factory LoginEvent.validatePassword(String password) = ValidatePassword;
+}
+
