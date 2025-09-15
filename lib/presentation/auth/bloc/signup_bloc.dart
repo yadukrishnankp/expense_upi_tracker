@@ -1,13 +1,13 @@
 
 
 
-import 'package:e_tracker_upi/data/entity/user_entity.dart';
-import 'package:e_tracker_upi/domain/usecase/create_user_usecase.dart';
+import 'package:e_tracker_upi/domain/usecase/auth/create_user_usecase.dart';
 import 'package:e_tracker_upi/presentation/auth/event/signup_event.dart';
 import 'package:e_tracker_upi/presentation/auth/state/signup_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../domain/usecase/signup_usecase.dart';
+import '../../../data/model/auth/user_model.dart';
+import '../../../domain/usecase/auth/signup_usecase.dart';
 
 class SignupBloc extends Bloc<SignupEvent,SignupState> {
   final SignUpUseCase signUpUseCase;
@@ -29,8 +29,8 @@ class SignupBloc extends Bloc<SignupEvent,SignupState> {
       },
           (userId) {
             emit(SignupState.success( data: state.data, ));
-            final user = UserEntity(name: event.email, userId: userId, email: event.email);
-            add(CreateUser(userEntity: user));
+            final user = UserModel(name: event.email, userId: userId, email: event.email);
+            add(CreateUser(userModel: user));
         print('Sign Up Successful: $userId');
       },
     );
@@ -38,7 +38,7 @@ class SignupBloc extends Bloc<SignupEvent,SignupState> {
    _createUser(CreateUser event,Emitter<SignupState> emit)async{
     try{
       emit(SignupState.loading(data: state.data));
-      final result = await createUserUseCase.call(event.userEntity);
+      final result = await createUserUseCase.call(event.userModel);
       result.fold((failure) =>emit(SignupState.error(data: state.data, message: failure)),
             (success) =>emit(SignupState.success(message: "account created successfully", data: state.data.copyWith(
               navigateToLogin: true

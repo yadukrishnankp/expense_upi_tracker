@@ -128,11 +128,11 @@ return validateName(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email,  String password,  String name)?  signup,TResult Function( UserEntity userEntity)?  createUser,TResult Function( String email)?  validateEmail,TResult Function( String password)?  validatePassword,TResult Function( String name)?  validateName,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email,  String password,  String name)?  signup,TResult Function( UserModel userModel)?  createUser,TResult Function( String email)?  validateEmail,TResult Function( String password)?  validatePassword,TResult Function( String name)?  validateName,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Signup() when signup != null:
 return signup(_that.email,_that.password,_that.name);case CreateUser() when createUser != null:
-return createUser(_that.userEntity);case ValidateEmail() when validateEmail != null:
+return createUser(_that.userModel);case ValidateEmail() when validateEmail != null:
 return validateEmail(_that.email);case ValidatePassword() when validatePassword != null:
 return validatePassword(_that.password);case ValidateName() when validateName != null:
 return validateName(_that.name);case _:
@@ -153,11 +153,11 @@ return validateName(_that.name);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email,  String password,  String name)  signup,required TResult Function( UserEntity userEntity)  createUser,required TResult Function( String email)  validateEmail,required TResult Function( String password)  validatePassword,required TResult Function( String name)  validateName,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email,  String password,  String name)  signup,required TResult Function( UserModel userModel)  createUser,required TResult Function( String email)  validateEmail,required TResult Function( String password)  validatePassword,required TResult Function( String name)  validateName,}) {final _that = this;
 switch (_that) {
 case Signup():
 return signup(_that.email,_that.password,_that.name);case CreateUser():
-return createUser(_that.userEntity);case ValidateEmail():
+return createUser(_that.userModel);case ValidateEmail():
 return validateEmail(_that.email);case ValidatePassword():
 return validatePassword(_that.password);case ValidateName():
 return validateName(_that.name);}
@@ -174,11 +174,11 @@ return validateName(_that.name);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email,  String password,  String name)?  signup,TResult? Function( UserEntity userEntity)?  createUser,TResult? Function( String email)?  validateEmail,TResult? Function( String password)?  validatePassword,TResult? Function( String name)?  validateName,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email,  String password,  String name)?  signup,TResult? Function( UserModel userModel)?  createUser,TResult? Function( String email)?  validateEmail,TResult? Function( String password)?  validatePassword,TResult? Function( String name)?  validateName,}) {final _that = this;
 switch (_that) {
 case Signup() when signup != null:
 return signup(_that.email,_that.password,_that.name);case CreateUser() when createUser != null:
-return createUser(_that.userEntity);case ValidateEmail() when validateEmail != null:
+return createUser(_that.userModel);case ValidateEmail() when validateEmail != null:
 return validateEmail(_that.email);case ValidatePassword() when validatePassword != null:
 return validatePassword(_that.password);case ValidateName() when validateName != null:
 return validateName(_that.name);case _:
@@ -263,10 +263,10 @@ as String,
 
 
 class CreateUser implements SignupEvent {
-  const CreateUser({required this.userEntity});
+  const CreateUser({required this.userModel});
   
 
- final  UserEntity userEntity;
+ final  UserModel userModel;
 
 /// Create a copy of SignupEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -278,16 +278,16 @@ $CreateUserCopyWith<CreateUser> get copyWith => _$CreateUserCopyWithImpl<CreateU
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateUser&&(identical(other.userEntity, userEntity) || other.userEntity == userEntity));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreateUser&&(identical(other.userModel, userModel) || other.userModel == userModel));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userEntity);
+int get hashCode => Object.hash(runtimeType,userModel);
 
 @override
 String toString() {
-  return 'SignupEvent.createUser(userEntity: $userEntity)';
+  return 'SignupEvent.createUser(userModel: $userModel)';
 }
 
 
@@ -298,11 +298,11 @@ abstract mixin class $CreateUserCopyWith<$Res> implements $SignupEventCopyWith<$
   factory $CreateUserCopyWith(CreateUser value, $Res Function(CreateUser) _then) = _$CreateUserCopyWithImpl;
 @useResult
 $Res call({
- UserEntity userEntity
+ UserModel userModel
 });
 
 
-$UserEntityCopyWith<$Res> get userEntity;
+$UserModelCopyWith<$Res> get userModel;
 
 }
 /// @nodoc
@@ -315,10 +315,10 @@ class _$CreateUserCopyWithImpl<$Res>
 
 /// Create a copy of SignupEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? userEntity = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? userModel = null,}) {
   return _then(CreateUser(
-userEntity: null == userEntity ? _self.userEntity : userEntity // ignore: cast_nullable_to_non_nullable
-as UserEntity,
+userModel: null == userModel ? _self.userModel : userModel // ignore: cast_nullable_to_non_nullable
+as UserModel,
   ));
 }
 
@@ -326,10 +326,10 @@ as UserEntity,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$UserEntityCopyWith<$Res> get userEntity {
+$UserModelCopyWith<$Res> get userModel {
   
-  return $UserEntityCopyWith<$Res>(_self.userEntity, (value) {
-    return _then(_self.copyWith(userEntity: value));
+  return $UserModelCopyWith<$Res>(_self.userModel, (value) {
+    return _then(_self.copyWith(userModel: value));
   });
 }
 }

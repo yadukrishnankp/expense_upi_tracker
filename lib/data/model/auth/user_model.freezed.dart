@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'user_entity.dart';
+part of 'user_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,22 +13,22 @@ part of 'user_entity.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$UserEntity {
+mixin _$UserModel {
 
  String get name; String get userId; String get email; String? get imageUrl;
-/// Create a copy of UserEntity
+/// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$UserEntityCopyWith<UserEntity> get copyWith => _$UserEntityCopyWithImpl<UserEntity>(this as UserEntity, _$identity);
+$UserModelCopyWith<UserModel> get copyWith => _$UserModelCopyWithImpl<UserModel>(this as UserModel, _$identity);
 
-  /// Serializes this UserEntity to a JSON map.
+  /// Serializes this UserModel to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserEntity&&(identical(other.name, name) || other.name == name)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.email, email) || other.email == email)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.name, name) || other.name == name)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.email, email) || other.email == email)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -37,15 +37,15 @@ int get hashCode => Object.hash(runtimeType,name,userId,email,imageUrl);
 
 @override
 String toString() {
-  return 'UserEntity(name: $name, userId: $userId, email: $email, imageUrl: $imageUrl)';
+  return 'UserModel(name: $name, userId: $userId, email: $email, imageUrl: $imageUrl)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $UserEntityCopyWith<$Res>  {
-  factory $UserEntityCopyWith(UserEntity value, $Res Function(UserEntity) _then) = _$UserEntityCopyWithImpl;
+abstract mixin class $UserModelCopyWith<$Res>  {
+  factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
  String name, String userId, String email, String? imageUrl
@@ -56,14 +56,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$UserEntityCopyWithImpl<$Res>
-    implements $UserEntityCopyWith<$Res> {
-  _$UserEntityCopyWithImpl(this._self, this._then);
+class _$UserModelCopyWithImpl<$Res>
+    implements $UserModelCopyWith<$Res> {
+  _$UserModelCopyWithImpl(this._self, this._then);
 
-  final UserEntity _self;
-  final $Res Function(UserEntity) _then;
+  final UserModel _self;
+  final $Res Function(UserModel) _then;
 
-/// Create a copy of UserEntity
+/// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? userId = null,Object? email = null,Object? imageUrl = freezed,}) {
   return _then(_self.copyWith(
@@ -78,8 +78,8 @@ as String?,
 }
 
 
-/// Adds pattern-matching-related methods to [UserEntity].
-extension UserEntityPatterns on UserEntity {
+/// Adds pattern-matching-related methods to [UserModel].
+extension UserModelPatterns on UserModel {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -92,10 +92,10 @@ extension UserEntityPatterns on UserEntity {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _UserEntity value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _UserModel value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _UserEntity() when $default != null:
+case _UserModel() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -114,10 +114,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _UserEntity value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _UserModel value)  $default,){
 final _that = this;
 switch (_that) {
-case _UserEntity():
+case _UserModel():
 return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
@@ -132,10 +132,10 @@ return $default(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _UserEntity value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _UserModel value)?  $default,){
 final _that = this;
 switch (_that) {
-case _UserEntity() when $default != null:
+case _UserModel() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -155,7 +155,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String userId,  String email,  String? imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _UserEntity() when $default != null:
+case _UserModel() when $default != null:
 return $default(_that.name,_that.userId,_that.email,_that.imageUrl);case _:
   return orElse();
 
@@ -176,7 +176,7 @@ return $default(_that.name,_that.userId,_that.email,_that.imageUrl);case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String userId,  String email,  String? imageUrl)  $default,) {final _that = this;
 switch (_that) {
-case _UserEntity():
+case _UserModel():
 return $default(_that.name,_that.userId,_that.email,_that.imageUrl);}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -193,7 +193,7 @@ return $default(_that.name,_that.userId,_that.email,_that.imageUrl);}
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String userId,  String email,  String? imageUrl)?  $default,) {final _that = this;
 switch (_that) {
-case _UserEntity() when $default != null:
+case _UserModel() when $default != null:
 return $default(_that.name,_that.userId,_that.email,_that.imageUrl);case _:
   return null;
 
@@ -205,29 +205,29 @@ return $default(_that.name,_that.userId,_that.email,_that.imageUrl);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _UserEntity implements UserEntity {
-  const _UserEntity({required this.name, required this.userId, required this.email, this.imageUrl});
-  factory _UserEntity.fromJson(Map<String, dynamic> json) => _$UserEntityFromJson(json);
+class _UserModel implements UserModel {
+  const _UserModel({required this.name, required this.userId, required this.email, this.imageUrl});
+  factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 @override final  String name;
 @override final  String userId;
 @override final  String email;
 @override final  String? imageUrl;
 
-/// Create a copy of UserEntity
+/// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$UserEntityCopyWith<_UserEntity> get copyWith => __$UserEntityCopyWithImpl<_UserEntity>(this, _$identity);
+_$UserModelCopyWith<_UserModel> get copyWith => __$UserModelCopyWithImpl<_UserModel>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$UserEntityToJson(this, );
+  return _$UserModelToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserEntity&&(identical(other.name, name) || other.name == name)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.email, email) || other.email == email)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.name, name) || other.name == name)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.email, email) || other.email == email)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -236,15 +236,15 @@ int get hashCode => Object.hash(runtimeType,name,userId,email,imageUrl);
 
 @override
 String toString() {
-  return 'UserEntity(name: $name, userId: $userId, email: $email, imageUrl: $imageUrl)';
+  return 'UserModel(name: $name, userId: $userId, email: $email, imageUrl: $imageUrl)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$UserEntityCopyWith<$Res> implements $UserEntityCopyWith<$Res> {
-  factory _$UserEntityCopyWith(_UserEntity value, $Res Function(_UserEntity) _then) = __$UserEntityCopyWithImpl;
+abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
+  factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
  String name, String userId, String email, String? imageUrl
@@ -255,17 +255,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$UserEntityCopyWithImpl<$Res>
-    implements _$UserEntityCopyWith<$Res> {
-  __$UserEntityCopyWithImpl(this._self, this._then);
+class __$UserModelCopyWithImpl<$Res>
+    implements _$UserModelCopyWith<$Res> {
+  __$UserModelCopyWithImpl(this._self, this._then);
 
-  final _UserEntity _self;
-  final $Res Function(_UserEntity) _then;
+  final _UserModel _self;
+  final $Res Function(_UserModel) _then;
 
-/// Create a copy of UserEntity
+/// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? userId = null,Object? email = null,Object? imageUrl = freezed,}) {
-  return _then(_UserEntity(
+  return _then(_UserModel(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable

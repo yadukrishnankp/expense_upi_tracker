@@ -10,11 +10,13 @@ class PreferenceRepoImpl extends PreferenceRepo{
   @override
   Future<String> getUserId() async{
     final userId =  await sharedPreferences.getString("userId");
+    print("getUserId ${userId}");
     return userId ?? "" ;
   }
 
   @override
   Future<void> saveUserId(String userId) async{
+    print("saveUserId ${userId}");
   await  sharedPreferences.setString("userId", userId);
   }
 

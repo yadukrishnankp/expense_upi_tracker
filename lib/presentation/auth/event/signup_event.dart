@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../data/entity/user_entity.dart';
+import '../../../data/model/auth/user_model.dart';
+
 
 part 'signup_event.freezed.dart';
 
@@ -13,7 +14,7 @@ sealed class SignupEvent with _$SignupEvent {
   }) = Signup;
 
   const factory SignupEvent.createUser({
-    required UserEntity userEntity,
+    required UserModel userModel,
   }) = CreateUser;
 
   const factory SignupEvent.validateEmail({

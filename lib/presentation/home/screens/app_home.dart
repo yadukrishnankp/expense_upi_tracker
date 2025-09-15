@@ -1,12 +1,15 @@
 import 'package:e_tracker_upi/core/router/app_router.dart';
 import 'package:e_tracker_upi/presentation/home/bloc/app_home_bloc.dart';
+import 'package:e_tracker_upi/presentation/home/di/home_injection_container.dart';
 import 'package:e_tracker_upi/presentation/home/state/app_home_state.dart';
 import 'package:e_tracker_upi/presentation/home/widgets/app_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/injection_container.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../profile/bloc/profile_bloc.dart';
 
 class AppHome extends StatefulWidget {
   final Widget child;
@@ -17,6 +20,16 @@ class AppHome extends StatefulWidget {
 }
 
 class _AppHomeState extends State<AppHome> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+    },);
+
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -112,16 +125,16 @@ class _AppHomeState extends State<AppHome> {
                 },
                 listener: (context, state) {
                   state.bottomBarMenu.when(
-                      home: () => context.pushNamed(AppRoute.home.name),
-                      transactions: () => context.pushNamed(AppRoute.transaction.name),
-                      notes: () => context.pushNamed(AppRoute.notes.name),
-                      profile: () => context.pushNamed(AppRoute.profile.name));
+                      home: () => context.goNamed(AppRoute.home.name),
+                      transactions: () => context.goNamed(AppRoute.transaction.name),
+                      notes: () => context.goNamed(AppRoute.notes.name),
+                      profile: () => context.goNamed(AppRoute.profile.name));
                 },
               ),
             ),
           ),
           Align(
-            alignment: Alignment.bottomCenter,
+              alignment: Alignment.bottomCenter,
               child: AppBottomBar())
         ],
       ),

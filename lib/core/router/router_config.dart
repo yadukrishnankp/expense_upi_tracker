@@ -1,18 +1,27 @@
 import 'package:e_tracker_upi/presentation/auth/screens/signup_screen.dart';
+import 'package:e_tracker_upi/presentation/expense/bloc/AddExpenseBloc.dart';
 import 'package:e_tracker_upi/presentation/financial_report/screen/financial_report_screen.dart';
 import 'package:e_tracker_upi/presentation/home/screens/app_home.dart';
 import 'package:e_tracker_upi/presentation/home/screens/home_screen.dart';
+import 'package:e_tracker_upi/presentation/income/bloc/add_income_bloc.dart';
 import 'package:e_tracker_upi/presentation/income/screens/add_income_screen.dart';
 import 'package:e_tracker_upi/presentation/notes/screens/add_note_screen.dart';
 import 'package:e_tracker_upi/presentation/notes/screens/notes_screen.dart';
-import 'package:e_tracker_upi/presentation/profile/profile_screen.dart';
+import 'package:e_tracker_upi/presentation/profile/screen/profile_screen.dart';
 import 'package:e_tracker_upi/presentation/transactions/screens/transaction_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../presentation/auth/bloc/login_bloc.dart';
+import '../../presentation/auth/bloc/signup_bloc.dart';
 import '../../presentation/auth/screens/login_screen.dart';
 import '../../presentation/expense/screens/add_expense_screen.dart';
+import '../../presentation/home/bloc/app_home_bloc.dart';
+import '../../presentation/home/di/home_injection_container.dart';
+import '../../presentation/profile/bloc/profile_bloc.dart';
 import '../../presentation/splash/screens/splash_screen.dart';
+import '../injection_container.dart';
 import 'app_router.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey =
@@ -24,7 +33,13 @@ final GoRouter routerConfig = GoRouter(
     ShellRoute(
       navigatorKey: _rootNavigatorKey,
       builder: (context, state, child) {
-        return AppHome(child: child);
+        print("shell route listen");
+        HomeInjectionContainer.init();
+        return   MultiBlocProvider(
+          providers: [          BlocProvider<AppHomeBloc>(create: (context) => sl<AppHomeBloc>(),),
+            BlocProvider<ProfileBloc>(create: (context) => sl<ProfileBloc>(),)
+          ],
+            child: AppHome(child: child));
       },
       routes: [
         // This screen is displayed on the ShellRoute's Navigator.
@@ -62,13 +77,13 @@ final GoRouter routerConfig = GoRouter(
     GoRoute(path: AppRoute.add_expense.path,
       name: AppRoute.add_expense.name,
       builder: (BuildContext context, GoRouterState state) {
-        return const AddExpenseScreen();
+        return BlocProvider(create: (context) => AddExpenseBloc(addExpenseUseCase: sl()),child: const AddExpenseScreen(),);
       },
     ),
     GoRoute(path: AppRoute.add_income.path,
       name: AppRoute.add_income.name,
       builder: (BuildContext context, GoRouterState state) {
-        return const AddIncomeScreen();
+        return BlocProvider<AddIncomeBloc>(create: (context) => AddIncomeBloc(addExpenseUseCase: sl()),child: const AddIncomeScreen(),);
       },
     ),
     GoRoute(path: AppRoute.financial_report.path,
@@ -93,13 +108,15 @@ final GoRouter routerConfig = GoRouter(
     GoRoute(path: AppRoute.signUp.path,
       name: AppRoute.signUp.name,
       builder: (BuildContext context, GoRouterState state) {
-        return const SignupScreen();
+        return      BlocProvider<SignupBloc>(create: (context) =>  SignupBloc(createUserUseCase: sl(), signUpUseCase: sl()),
+        child: SignupScreen(),);
       },
     ),
     GoRoute(path: AppRoute.login.path,
       name: AppRoute.login.name,
       builder: (BuildContext context, GoRouterState state) {
-        return const LoginScreen();
+        return  BlocProvider<LoginBloc>(create: (context) => LoginBloc(preferenceRepo: sl(), signInUseCase: sl()),
+        child: LoginScreen(),);
       },
     ),
   ],

@@ -1,6 +1,17 @@
+import 'package:e_tracker_upi/presentation/expense/bloc/AddExpenseBloc.dart';
+import 'package:e_tracker_upi/presentation/expense/event/add_expense_event.dart';
+import 'package:e_tracker_upi/presentation/expense/state/add_expense_state.dart';
 import 'package:flutter/material.dart';
 import 'package:e_tracker_upi/core/style/style_extension.dart';
 import 'package:e_tracker_upi/core/theme/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+
+import '../../../core/utils/app_date_time_utils.dart';
+import '../../../shared/widget/app_toast.dart';
+import '../../../shared/widget/loading_dialog.dart';
+import '../../income/state/add_income_state.dart';
 
 class AddExpenseScreen extends StatefulWidget {
   const AddExpenseScreen({super.key});
@@ -14,11 +25,83 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   String? selectedCategory;
   String? selectedWallet;
   final TextEditingController _amountController = TextEditingController(text: "0");
+  final TextEditingController _descController = TextEditingController();
+  final TextEditingController _dateTimeController = TextEditingController();
+
+  DateTime selectedDateTime = DateTime.now();
+  int dateTimeEpoch = DateTime.now().millisecondsSinceEpoch;
+
+  final categoryList = ["Food","Groceries","Entertainment","Utility Bills","Shopping","Rent","Fuel"];
+  final paymentTypeList = ["Bank","Upi","Cash"];
+
+  @override
+  void initState() {
+    _updateDateTimeDisplay();
+    super.initState();
+  }
+
+  void _updateDateTimeDisplay() {
+    final formattedDate = DateFormat('dd/MM/yyyy').format(selectedDateTime);
+    final formattedTime = DateFormat('HH:mm').format(selectedDateTime);
+    _dateTimeController.text = '$formattedDate $formattedTime';
+    dateTimeEpoch = selectedDateTime.millisecondsSinceEpoch;
+    _dateTimeController.text = AppDateTimeUtils.formatFull(selectedDateTime);
+    context.read<AddExpenseBloc>().add(AddExpenseEvent.onDateTimeChange(selectedDateTime));
+
+
+  }
+
+  Future<void> _selectDateTime() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: selectedDateTime,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (date != null) {
+      final time = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(selectedDateTime),
+      );
+
+      if (time != null) {
+        setState(() {
+          selectedDateTime = DateTime(
+            date.year,
+            date.month,
+            date.day,
+            time.hour,
+            time.minute,
+          );
+          _updateDateTimeDisplay();
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
-    return Scaffold(
+    return BlocListener<AddExpenseBloc,AddExpenseState>(listener: (context, state) {
+      if (state is AddExpenseLoadingState){
+        LoadingDialog.show(context);
+
+      }
+      else if(state is AddExpenseSuccessState){
+        LoadingDialog.close(context);
+        if(state.message?.isNotEmpty ?? false){
+          AppToast.showInfoToast(state.message!, context);
+          context.pop();
+        }
+      }
+      else if(state is AddExpenseErrorState){
+        LoadingDialog.close(context);
+        if(state.error?.isNotEmpty ?? false){
+          AppToast.showInfoToast(state.error!, context);
+        }
+      }
+    },child: Scaffold(
       backgroundColor: appLightColor,
       body: Stack(
         children: [
@@ -93,6 +176,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             width: 120,
                             child: TextFormField(
                               controller: _amountController,
+                              onChanged:  (value) {
+                                if(value.isNotEmpty){
+                                  context.read<AddExpenseBloc>().add(AddExpenseEvent.onAmountChange(value ));
+                                }
+                              },
                               keyboardType: TextInputType.numberWithOptions(decimal: true),
                               textAlign: TextAlign.left,
                               style: context.appInterTextStyle(
@@ -137,33 +225,33 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: appLightColor,
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: appSecondaryColor, width: 1),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: selectedCategory,
-                                hint: Text(
-                                  "Select Category",
-                                  style: context.appInterTextStyle(
-                                    color: appSecondaryColor,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                isExpanded: true,
-                                items: const [
-                                  DropdownMenuItem(value: "Food", child: Text("Food")),
-                                  DropdownMenuItem(value: "Shopping", child: Text("Shopping")),
-                                  DropdownMenuItem(value: "Other", child: Text("Other")),
-                                ],
-                                onChanged: (val) => setState(() => selectedCategory = val),
+                          BlocBuilder<AddExpenseBloc,AddExpenseState>(builder: (context, state) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: appLightColor,
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(color: appSecondaryColor, width: 1),
                               ),
-                            ),
-                          ),
+                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                    value: state.addExpenseData.category,
+                                    hint: Text(
+                                      "Select Category",
+                                      style: context.appInterTextStyle(
+                                        color: appSecondaryColor,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    isExpanded: true,
+                                    items: categoryList.map((e) {
+                                      return DropdownMenuItem(value:e,child: Text(e));
+                                    },).toList(),
+                                    onChanged: (val) => context.read<AddExpenseBloc>().add(AddExpenseEvent.onCategoryChange(val!))
+                                ),
+                              ),
+                            );
+                          },),
                           const SizedBox(height: 18),
                           // Wallet Dropdown
                           Text(
@@ -175,33 +263,33 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: appLightColor,
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: appSecondaryColor, width: 1),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                value: selectedWallet,
-                                hint: Text(
-                                  "Select Wallet",
-                                  style: context.appInterTextStyle(
-                                    color: appSecondaryColor,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                isExpanded: true,
-                                items: const [
-                                  DropdownMenuItem(value: "Cash", child: Text("Cash")),
-                                  DropdownMenuItem(value: "Bank", child: Text("Bank")),
-                                  DropdownMenuItem(value: "UPI", child: Text("UPI")),
-                                ],
-                                onChanged: (val) => setState(() => selectedWallet = val),
+                          BlocBuilder<AddExpenseBloc,AddExpenseState>(builder: (context, state) {
+                            return  Container(
+                              decoration: BoxDecoration(
+                                color: appLightColor,
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(color: appSecondaryColor, width: 1),
                               ),
-                            ),
-                          ),
+                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: state.addExpenseData.wallet,
+                                  hint: Text(
+                                    "Select Wallet",
+                                    style: context.appInterTextStyle(
+                                      color: appSecondaryColor,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  isExpanded: true,
+                                  items:paymentTypeList.map((e) {
+                                    return DropdownMenuItem(value:e,child: Text(e));
+                                  },).toList(),
+                                  onChanged: (value) => context.read<AddExpenseBloc>().add(AddExpenseEvent.onWalletChange(value!)),
+                                ),
+                              ),
+                            );
+                          },),
                           const SizedBox(height: 18),
                           // Description Field
                           Text(
@@ -221,6 +309,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             ),
                             padding: const EdgeInsets.symmetric(horizontal: 14),
                             child: TextField(
+                              controller: _descController,
+                              onChanged: (value) => context.read<AddExpenseBloc>().add(AddExpenseEvent.onDescriptionChange(value ?? "")),
                               style: context.appInterTextStyle(
                                 color: appDarkColor,
                                 fontSize: 16,
@@ -237,68 +327,40 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             ),
                           ),
                           const SizedBox(height: 18),
-                          // Attachment Option
-                          InkWell(
-                            borderRadius: BorderRadius.circular(14),
-                            onTap: () {
-                              // Handle attachment
-                            },
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: appPrimaryColorLight,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Icon(Icons.attach_file, color: appPrimaryColor, size: 22),
+
+
+                          Container(
+                            decoration: BoxDecoration(
+                              color: appLightColor,
+                              borderRadius: BorderRadius.circular(14),
+                              border: Border.all(color: appSecondaryColor, width: 1),
+                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 14),
+                            child: TextField(
+                              controller: _dateTimeController,
+                              readOnly: true,
+                              onTap: _selectDateTime,
+                              style: context.appInterTextStyle(
+                                color: appDarkColor,
+                                fontSize: 16,
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Select Date & Time",
+                                hintStyle: context.appInterTextStyle(
+                                  color: appSecondaryColor,
+                                  fontSize: 16,
                                 ),
-                                const SizedBox(width: 12),
-                                Text(
-                                  "Add Attachment",
-                                  style: context.appInterTextStyle(
-                                    color: appPrimaryColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
-                                  ),
+                                suffixIcon: Icon(
+                                  Icons.calendar_today,
+                                  color: appSecondaryColor,
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                          const SizedBox(height: 18),
-                          // Repeat Switch
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Repeat",
-                                    style: context.appInterTextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                      color: appDarkColor,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    "Repeat transaction",
-                                    style: context.appInterTextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 13,
-                                      color: appSecondaryColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Switch(
-                                value: isRepeat,
-                                onChanged: (val) => setState(() => isRepeat = val),
-                                activeColor: appPrimaryColor,
-                              ),
-                            ],
-                          ),
+
+
+
                           const SizedBox(height: 32),
                           // Continue Button
                           SizedBox(
@@ -312,6 +374,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                 padding: const EdgeInsets.symmetric(vertical: 16),
                               ),
                               onPressed: () {
+                                context.read<AddExpenseBloc>().add(AddExpenseEvent.addExpense());
                                 // Continue action
                               },
                               child: Text(
@@ -334,6 +397,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           ),
         ],
       ),
-    );
+    ),);
   }
 }

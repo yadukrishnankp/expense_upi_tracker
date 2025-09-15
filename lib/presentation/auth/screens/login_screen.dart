@@ -1,5 +1,8 @@
 import 'package:e_tracker_upi/core/router/app_router.dart';
+import 'package:e_tracker_upi/presentation/auth/bloc/login_bloc.dart';
+import 'package:e_tracker_upi/presentation/auth/event/login_event.dart';
 import 'package:e_tracker_upi/presentation/auth/state/login_state.dart';
+import 'package:e_tracker_upi/shared/widget/loading_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,19 +50,17 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         ),
       ),
-      body: BlocListener(listener: (context, state) {
+      body: BlocListener<LoginBloc,LoginState>(listener: (context, state) {
         final currentState = state;
         if(currentState is  LoginLoadingState){
-          showDialog(context: context, builder: (context){
-            return  Center(child: CircularProgressIndicator(color: appPrimaryColor,));
-          });
+          LoadingDialog.show(context);
         }
         else if(currentState is LoginErrorState){
-
+          LoadingDialog.close(context);
           AppToast.showErrorToast(currentState.message,context);
         }
         else if(currentState is LoginSuccessState){
-
+          LoadingDialog.close(context);
          if(currentState.data.navigateToHome== true){
            context.goNamed(AppRoute.home.name);
          }
@@ -93,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ElevatedButton(
                   style: context.appPrimaryButtonStyle(),
                   onPressed: () {
-                    context.goNamed(AppRoute.home.name);
+               context.read<LoginBloc>().add(LoginEvent.login(email: _emailController.text, password: _passwordController.text));
                     // Handle login logic
                   },
                   child: Text(

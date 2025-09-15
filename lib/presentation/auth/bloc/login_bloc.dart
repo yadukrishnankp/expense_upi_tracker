@@ -1,7 +1,7 @@
 
 
 import 'package:e_tracker_upi/domain/repo/preference_repo.dart';
-import 'package:e_tracker_upi/domain/usecase/signin_usecase.dart';
+import 'package:e_tracker_upi/domain/usecase/auth/signin_usecase.dart';
 import 'package:e_tracker_upi/presentation/auth/event/login_event.dart';
 import 'package:e_tracker_upi/presentation/auth/state/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginBloc extends Bloc <LoginEvent,LoginState> {
   final SignInUseCase signInUseCase;
   final PreferenceRepo preferenceRepo;
-  LoginBloc(this.preferenceRepo, {required this.signInUseCase}) :super(LoginState.initial(data: LoginData())) {
+  LoginBloc({required this.preferenceRepo, required this.signInUseCase}) :super(LoginState.initial(data: LoginData())) {
     on<LoginSubmitted>(_onLoginSubmitted);
     on<ValidateEmail>((event, emit) {
 
@@ -28,7 +28,11 @@ class LoginBloc extends Bloc <LoginEvent,LoginState> {
       if(success.isNotEmpty){
         preferenceRepo.saveUserId(success);
       }
-      emit(LoginState.success(data: state.data, message: success));
+      emit(LoginState.success(data: state.data.copyWith(
+        navigateToHome: true
+      ),
+          message: success));
+      emit(LoginState.initial(data: state.data.copyWith(navigateToHome: false)));
     }, );
   }
 

@@ -1,7 +1,7 @@
 
 import 'package:dartz/dartz.dart';
 
-import '../repo/auth_repo.dart';
+import '../../repo/auth_repo.dart';
 
 class SignUpUseCase {
   final AuthRepo authRepo;

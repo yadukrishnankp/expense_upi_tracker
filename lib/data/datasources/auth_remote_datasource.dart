@@ -2,14 +2,16 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:e_tracker_upi/data/entity/user_entity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../model/auth/user_model.dart';
 
 abstract class AuthRemoteDataSource {
   Future<Either<String,String>> signUp(String email, String password);
   Future<Either<String,String>> signIn(String email, String password);
-  Future<void> signOut();
-  Future<Either<String,bool>> createUser(UserEntity entity);
+  Future<Either<String,bool>> signOut();
+  Future<Either<String,bool>> createUser(UserModel entity);
+  Future<Either<String,Map<String,dynamic>>> getUser(String userId);
 
 }
 
@@ -39,9 +41,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<void> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
+  Future<Either<String,bool>> signOut() async{
+     try {
+       await  firebaseAuth.signOut();
+       return const  Right(true);
+     }
+     catch(e){
+       print("signOut error ${e.toString()}");
+       return const Left("error signOut");
+     }
   }
 
   @override
@@ -78,13 +86,33 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<Either<String, bool>> createUser(UserEntity entity)async {
+  Future<Either<String, bool>> createUser(UserModel entity)async {
     try{
      await  firebaseFirestore.collection("users").doc(entity.userId).set(entity.toJson());
      return  Right(true);
     }
     catch(e){
       return Left("error creating user");
+    }
+  }
+
+  @override
+  Future<Either<String, Map<String,dynamic>>> getUser(String userId) async{
+      try{
+        print("userId: ${userId}");
+        final result =await  firebaseFirestore.collection("users").doc(userId).get();
+        if(result.exists && result.data() != null){
+          print("get user : ${result.data().toString()}");
+          UserModel userEntity = UserModel.fromJson(result.data()!);
+          return  Right(result.data()!);
+        }
+        else{
+          return const  Left("No data found");
+        }
+
+      }
+      catch(e){
+        return   Left(e.toString());
     }
   }
 

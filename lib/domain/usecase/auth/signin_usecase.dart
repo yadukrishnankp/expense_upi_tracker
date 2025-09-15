@@ -2,7 +2,7 @@
 
 import 'package:dartz/dartz.dart';
 
-import '../repo/auth_repo.dart';
+import '../../repo/auth_repo.dart';
 
 class SignInUseCase {
   final AuthRepo repo;
