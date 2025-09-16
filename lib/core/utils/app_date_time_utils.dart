@@ -26,7 +26,26 @@ class AppDateTimeUtils{
     final endDate = DateTime(date.year, date.month + 1, 0); // 0 gives last day of previous month
     return AppDateModel(startDate: startDate, endDate: endDate);
   }
+
+  static AppDateModel getWeekRange(DateTime selectedDate) {
+    int daysFromMonday = selectedDate.weekday - 1; // weekday: Monday = 1, Sunday = 7
+    DateTime startOfWeek = selectedDate.subtract(Duration(days: daysFromMonday));
+    DateTime endOfWeek = startOfWeek.add(Duration(days: 6));
+    DateTime weekStart = DateTime(startOfWeek.year, startOfWeek.month, startOfWeek.day);
+    DateTime weekEnd = DateTime(endOfWeek.year, endOfWeek.month, endOfWeek.day, 23, 59, 59);
+
+    return AppDateModel(startDate: weekStart, endDate: weekEnd);
+  }
+
+
+  static AppDateModel getDayRange(DateTime date) {
+    DateTime startOfDay = DateTime(date.year, date.month, date.day);
+    DateTime endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59, 999);
+    return AppDateModel (startDate: startOfDay,endDate: endOfDay);
+  }
 }
+
+
 
 
 class AppDateModel{

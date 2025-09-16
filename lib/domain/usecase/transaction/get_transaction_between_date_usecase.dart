@@ -14,7 +14,6 @@ class GetTransactionBetweenDateUseCase{
       return Left(l);
     }, (r) {
       final list = r.map((e) {
-        print("GetTransactionBetweenDateUseCase ${e.amount}");
         return TransactionEntity.fromModel(e);
       },).toList();
       return Right(list);

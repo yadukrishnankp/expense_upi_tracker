@@ -12,6 +12,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/injection_container.dart';
 import '../widgets/income_expense_chart.dart';
+import '../widgets/transaction_date_range_item.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -253,43 +254,17 @@ class _HomeScreenState extends State<HomeScreen> {
            //    height: 300,
            //      child: buildChart()),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              child: SingleChildScrollView(
-                // scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 8),
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: appColorLightYellow,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        "Today",
-                        style: context.appInterTextStyle(
-                          color: appColorYellow,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    ...["Week", "Month", "Year"].map((text) => Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: Text(
-                        text,
-                        style: context.appInterTextStyle(
-                          color: appSecondaryColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    )).toList(),
-                  ],
-                ),
+              padding: const EdgeInsets.only(left: 15,top: 15,bottom: 5),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  height: 31,
+                    child: TransactionDateRangeItem()),
               ),
             ),
+
+
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14,vertical: 10),
               child: Row(
@@ -337,7 +312,10 @@ class _HomeScreenState extends State<HomeScreen> {
             }, success: (data) {
              return  _transactionList(data, false);
             }, failure: (message) {
-              return Container();
+              return Container(child:  Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Center(child: Text(message,style: context.appInterTextStyle(),)),
+              ));
             },);
           },)
 

@@ -14,7 +14,7 @@ class TransactionListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 7),
       child: Container(
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(

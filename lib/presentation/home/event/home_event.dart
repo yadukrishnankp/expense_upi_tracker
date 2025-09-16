@@ -6,5 +6,6 @@ part 'home_event.freezed.dart';
 sealed class HomeEvent with _$HomeEvent {
   const factory HomeEvent.getRecentTransaction() = GetRecentTransactionEvent;
   const factory HomeEvent.getTransactionByMonth(DateTime month) = GetTransactionByMonthEvent;
+  const factory HomeEvent.onDateRangeChange(String dateRange) = OnDateRangeChangeEvent;
 }
 

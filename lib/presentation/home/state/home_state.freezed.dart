@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomeState {
 
- MonthlyReport get monthlyReport; FirestoreFetchState<List<TransactionEntity>> get transactionList;
+ MonthlyReport get monthlyReport; FirestoreFetchState<List<TransactionEntity>> get transactionList; List<DateRangeItem> get dateRangeItem; DateRange get dateRange;
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $HomeStateCopyWith<HomeState> get copyWith => _$HomeStateCopyWithImpl<HomeState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&(identical(other.monthlyReport, monthlyReport) || other.monthlyReport == monthlyReport)&&(identical(other.transactionList, transactionList) || other.transactionList == transactionList));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&(identical(other.monthlyReport, monthlyReport) || other.monthlyReport == monthlyReport)&&(identical(other.transactionList, transactionList) || other.transactionList == transactionList)&&const DeepCollectionEquality().equals(other.dateRangeItem, dateRangeItem)&&(identical(other.dateRange, dateRange) || other.dateRange == dateRange));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,monthlyReport,transactionList);
+int get hashCode => Object.hash(runtimeType,monthlyReport,transactionList,const DeepCollectionEquality().hash(dateRangeItem),dateRange);
 
 @override
 String toString() {
-  return 'HomeState(monthlyReport: $monthlyReport, transactionList: $transactionList)';
+  return 'HomeState(monthlyReport: $monthlyReport, transactionList: $transactionList, dateRangeItem: $dateRangeItem, dateRange: $dateRange)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $HomeStateCopyWith<$Res>  {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) _then) = _$HomeStateCopyWithImpl;
 @useResult
 $Res call({
- MonthlyReport monthlyReport, FirestoreFetchState<List<TransactionEntity>> transactionList
+ MonthlyReport monthlyReport, FirestoreFetchState<List<TransactionEntity>> transactionList, List<DateRangeItem> dateRangeItem, DateRange dateRange
 });
 
 
@@ -62,11 +62,13 @@ class _$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? monthlyReport = null,Object? transactionList = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? monthlyReport = null,Object? transactionList = null,Object? dateRangeItem = null,Object? dateRange = null,}) {
   return _then(_self.copyWith(
 monthlyReport: null == monthlyReport ? _self.monthlyReport : monthlyReport // ignore: cast_nullable_to_non_nullable
 as MonthlyReport,transactionList: null == transactionList ? _self.transactionList : transactionList // ignore: cast_nullable_to_non_nullable
-as FirestoreFetchState<List<TransactionEntity>>,
+as FirestoreFetchState<List<TransactionEntity>>,dateRangeItem: null == dateRangeItem ? _self.dateRangeItem : dateRangeItem // ignore: cast_nullable_to_non_nullable
+as List<DateRangeItem>,dateRange: null == dateRange ? _self.dateRange : dateRange // ignore: cast_nullable_to_non_nullable
+as DateRange,
   ));
 }
 /// Create a copy of HomeState
@@ -166,10 +168,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( MonthlyReport monthlyReport,  FirestoreFetchState<List<TransactionEntity>> transactionList)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( MonthlyReport monthlyReport,  FirestoreFetchState<List<TransactionEntity>> transactionList,  List<DateRangeItem> dateRangeItem,  DateRange dateRange)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.monthlyReport,_that.transactionList);case _:
+return $default(_that.monthlyReport,_that.transactionList,_that.dateRangeItem,_that.dateRange);case _:
   return orElse();
 
 }
@@ -187,10 +189,10 @@ return $default(_that.monthlyReport,_that.transactionList);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( MonthlyReport monthlyReport,  FirestoreFetchState<List<TransactionEntity>> transactionList)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( MonthlyReport monthlyReport,  FirestoreFetchState<List<TransactionEntity>> transactionList,  List<DateRangeItem> dateRangeItem,  DateRange dateRange)  $default,) {final _that = this;
 switch (_that) {
 case _HomeState():
-return $default(_that.monthlyReport,_that.transactionList);}
+return $default(_that.monthlyReport,_that.transactionList,_that.dateRangeItem,_that.dateRange);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -204,10 +206,10 @@ return $default(_that.monthlyReport,_that.transactionList);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( MonthlyReport monthlyReport,  FirestoreFetchState<List<TransactionEntity>> transactionList)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( MonthlyReport monthlyReport,  FirestoreFetchState<List<TransactionEntity>> transactionList,  List<DateRangeItem> dateRangeItem,  DateRange dateRange)?  $default,) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.monthlyReport,_that.transactionList);case _:
+return $default(_that.monthlyReport,_that.transactionList,_that.dateRangeItem,_that.dateRange);case _:
   return null;
 
 }
@@ -219,11 +221,19 @@ return $default(_that.monthlyReport,_that.transactionList);case _:
 
 
 class _HomeState implements HomeState {
-  const _HomeState({this.monthlyReport = const MonthlyReport(income: 0.0, expense: 0.0, netBalance: 0.0), this.transactionList = const FirestoreFetchState.initial()});
+  const _HomeState({this.monthlyReport = const MonthlyReport(income: 0.0, expense: 0.0, netBalance: 0.0), this.transactionList = const FirestoreFetchState.initial(), final  List<DateRangeItem> dateRangeItem = const [DateRangeItem(name: "Today", isSelected: true), DateRangeItem(name: "Weekly", isSelected: false), DateRangeItem(name: "Monthly", isSelected: false)], this.dateRange = DateRange.Today}): _dateRangeItem = dateRangeItem;
   
 
 @override@JsonKey() final  MonthlyReport monthlyReport;
 @override@JsonKey() final  FirestoreFetchState<List<TransactionEntity>> transactionList;
+ final  List<DateRangeItem> _dateRangeItem;
+@override@JsonKey() List<DateRangeItem> get dateRangeItem {
+  if (_dateRangeItem is EqualUnmodifiableListView) return _dateRangeItem;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_dateRangeItem);
+}
+
+@override@JsonKey() final  DateRange dateRange;
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +245,16 @@ _$HomeStateCopyWith<_HomeState> get copyWith => __$HomeStateCopyWithImpl<_HomeSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&(identical(other.monthlyReport, monthlyReport) || other.monthlyReport == monthlyReport)&&(identical(other.transactionList, transactionList) || other.transactionList == transactionList));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&(identical(other.monthlyReport, monthlyReport) || other.monthlyReport == monthlyReport)&&(identical(other.transactionList, transactionList) || other.transactionList == transactionList)&&const DeepCollectionEquality().equals(other._dateRangeItem, _dateRangeItem)&&(identical(other.dateRange, dateRange) || other.dateRange == dateRange));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,monthlyReport,transactionList);
+int get hashCode => Object.hash(runtimeType,monthlyReport,transactionList,const DeepCollectionEquality().hash(_dateRangeItem),dateRange);
 
 @override
 String toString() {
-  return 'HomeState(monthlyReport: $monthlyReport, transactionList: $transactionList)';
+  return 'HomeState(monthlyReport: $monthlyReport, transactionList: $transactionList, dateRangeItem: $dateRangeItem, dateRange: $dateRange)';
 }
 
 
@@ -255,7 +265,7 @@ abstract mixin class _$HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Re
   factory _$HomeStateCopyWith(_HomeState value, $Res Function(_HomeState) _then) = __$HomeStateCopyWithImpl;
 @override @useResult
 $Res call({
- MonthlyReport monthlyReport, FirestoreFetchState<List<TransactionEntity>> transactionList
+ MonthlyReport monthlyReport, FirestoreFetchState<List<TransactionEntity>> transactionList, List<DateRangeItem> dateRangeItem, DateRange dateRange
 });
 
 
@@ -272,11 +282,13 @@ class __$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? monthlyReport = null,Object? transactionList = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? monthlyReport = null,Object? transactionList = null,Object? dateRangeItem = null,Object? dateRange = null,}) {
   return _then(_HomeState(
 monthlyReport: null == monthlyReport ? _self.monthlyReport : monthlyReport // ignore: cast_nullable_to_non_nullable
 as MonthlyReport,transactionList: null == transactionList ? _self.transactionList : transactionList // ignore: cast_nullable_to_non_nullable
-as FirestoreFetchState<List<TransactionEntity>>,
+as FirestoreFetchState<List<TransactionEntity>>,dateRangeItem: null == dateRangeItem ? _self._dateRangeItem : dateRangeItem // ignore: cast_nullable_to_non_nullable
+as List<DateRangeItem>,dateRange: null == dateRange ? _self.dateRange : dateRange // ignore: cast_nullable_to_non_nullable
+as DateRange,
   ));
 }
 
@@ -552,6 +564,260 @@ income: null == income ? _self.income : income // ignore: cast_nullable_to_non_n
 as double,expense: null == expense ? _self.expense : expense // ignore: cast_nullable_to_non_nullable
 as double,netBalance: null == netBalance ? _self.netBalance : netBalance // ignore: cast_nullable_to_non_nullable
 as double,
+  ));
+}
+
+
+}
+
+/// @nodoc
+mixin _$DateRangeItem {
+
+ String get name; bool get isSelected;
+/// Create a copy of DateRangeItem
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$DateRangeItemCopyWith<DateRangeItem> get copyWith => _$DateRangeItemCopyWithImpl<DateRangeItem>(this as DateRangeItem, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DateRangeItem&&(identical(other.name, name) || other.name == name)&&(identical(other.isSelected, isSelected) || other.isSelected == isSelected));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,name,isSelected);
+
+@override
+String toString() {
+  return 'DateRangeItem(name: $name, isSelected: $isSelected)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $DateRangeItemCopyWith<$Res>  {
+  factory $DateRangeItemCopyWith(DateRangeItem value, $Res Function(DateRangeItem) _then) = _$DateRangeItemCopyWithImpl;
+@useResult
+$Res call({
+ String name, bool isSelected
+});
+
+
+
+
+}
+/// @nodoc
+class _$DateRangeItemCopyWithImpl<$Res>
+    implements $DateRangeItemCopyWith<$Res> {
+  _$DateRangeItemCopyWithImpl(this._self, this._then);
+
+  final DateRangeItem _self;
+  final $Res Function(DateRangeItem) _then;
+
+/// Create a copy of DateRangeItem
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? isSelected = null,}) {
+  return _then(_self.copyWith(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,isSelected: null == isSelected ? _self.isSelected : isSelected // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [DateRangeItem].
+extension DateRangeItemPatterns on DateRangeItem {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _DateRangeItem value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _DateRangeItem() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _DateRangeItem value)  $default,){
+final _that = this;
+switch (_that) {
+case _DateRangeItem():
+return $default(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _DateRangeItem value)?  $default,){
+final _that = this;
+switch (_that) {
+case _DateRangeItem() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  bool isSelected)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _DateRangeItem() when $default != null:
+return $default(_that.name,_that.isSelected);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  bool isSelected)  $default,) {final _that = this;
+switch (_that) {
+case _DateRangeItem():
+return $default(_that.name,_that.isSelected);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  bool isSelected)?  $default,) {final _that = this;
+switch (_that) {
+case _DateRangeItem() when $default != null:
+return $default(_that.name,_that.isSelected);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _DateRangeItem implements DateRangeItem {
+  const _DateRangeItem({required this.name, required this.isSelected});
+  
+
+@override final  String name;
+@override final  bool isSelected;
+
+/// Create a copy of DateRangeItem
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$DateRangeItemCopyWith<_DateRangeItem> get copyWith => __$DateRangeItemCopyWithImpl<_DateRangeItem>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DateRangeItem&&(identical(other.name, name) || other.name == name)&&(identical(other.isSelected, isSelected) || other.isSelected == isSelected));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,name,isSelected);
+
+@override
+String toString() {
+  return 'DateRangeItem(name: $name, isSelected: $isSelected)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$DateRangeItemCopyWith<$Res> implements $DateRangeItemCopyWith<$Res> {
+  factory _$DateRangeItemCopyWith(_DateRangeItem value, $Res Function(_DateRangeItem) _then) = __$DateRangeItemCopyWithImpl;
+@override @useResult
+$Res call({
+ String name, bool isSelected
+});
+
+
+
+
+}
+/// @nodoc
+class __$DateRangeItemCopyWithImpl<$Res>
+    implements _$DateRangeItemCopyWith<$Res> {
+  __$DateRangeItemCopyWithImpl(this._self, this._then);
+
+  final _DateRangeItem _self;
+  final $Res Function(_DateRangeItem) _then;
+
+/// Create a copy of DateRangeItem
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? isSelected = null,}) {
+  return _then(_DateRangeItem(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,isSelected: null == isSelected ? _self.isSelected : isSelected // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

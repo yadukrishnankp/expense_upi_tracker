@@ -36,6 +36,7 @@ class TransactionRemoteDatasourceImpl extends TransactionRemoteDatasource{
       if(limit == true){
       query =  query.limit(10);
       }
+
       final result =await query
           . where("dateTime",isGreaterThanOrEqualTo: model.startDate)
         .where("dateTime",isLessThanOrEqualTo: model.endDate)

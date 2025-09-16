@@ -55,12 +55,13 @@ extension HomeEventPatterns on HomeEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetRecentTransactionEvent value)?  getRecentTransaction,TResult Function( GetTransactionByMonthEvent value)?  getTransactionByMonth,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GetRecentTransactionEvent value)?  getRecentTransaction,TResult Function( GetTransactionByMonthEvent value)?  getTransactionByMonth,TResult Function( OnDateRangeChangeEvent value)?  onDateRangeChange,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case GetRecentTransactionEvent() when getRecentTransaction != null:
 return getRecentTransaction(_that);case GetTransactionByMonthEvent() when getTransactionByMonth != null:
-return getTransactionByMonth(_that);case _:
+return getTransactionByMonth(_that);case OnDateRangeChangeEvent() when onDateRangeChange != null:
+return onDateRangeChange(_that);case _:
   return orElse();
 
 }
@@ -78,12 +79,13 @@ return getTransactionByMonth(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetRecentTransactionEvent value)  getRecentTransaction,required TResult Function( GetTransactionByMonthEvent value)  getTransactionByMonth,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GetRecentTransactionEvent value)  getRecentTransaction,required TResult Function( GetTransactionByMonthEvent value)  getTransactionByMonth,required TResult Function( OnDateRangeChangeEvent value)  onDateRangeChange,}){
 final _that = this;
 switch (_that) {
 case GetRecentTransactionEvent():
 return getRecentTransaction(_that);case GetTransactionByMonthEvent():
-return getTransactionByMonth(_that);}
+return getTransactionByMonth(_that);case OnDateRangeChangeEvent():
+return onDateRangeChange(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -97,12 +99,13 @@ return getTransactionByMonth(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetRecentTransactionEvent value)?  getRecentTransaction,TResult? Function( GetTransactionByMonthEvent value)?  getTransactionByMonth,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GetRecentTransactionEvent value)?  getRecentTransaction,TResult? Function( GetTransactionByMonthEvent value)?  getTransactionByMonth,TResult? Function( OnDateRangeChangeEvent value)?  onDateRangeChange,}){
 final _that = this;
 switch (_that) {
 case GetRecentTransactionEvent() when getRecentTransaction != null:
 return getRecentTransaction(_that);case GetTransactionByMonthEvent() when getTransactionByMonth != null:
-return getTransactionByMonth(_that);case _:
+return getTransactionByMonth(_that);case OnDateRangeChangeEvent() when onDateRangeChange != null:
+return onDateRangeChange(_that);case _:
   return null;
 
 }
@@ -119,11 +122,12 @@ return getTransactionByMonth(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  getRecentTransaction,TResult Function( DateTime month)?  getTransactionByMonth,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  getRecentTransaction,TResult Function( DateTime month)?  getTransactionByMonth,TResult Function( String dateRange)?  onDateRangeChange,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GetRecentTransactionEvent() when getRecentTransaction != null:
 return getRecentTransaction();case GetTransactionByMonthEvent() when getTransactionByMonth != null:
-return getTransactionByMonth(_that.month);case _:
+return getTransactionByMonth(_that.month);case OnDateRangeChangeEvent() when onDateRangeChange != null:
+return onDateRangeChange(_that.dateRange);case _:
   return orElse();
 
 }
@@ -141,11 +145,12 @@ return getTransactionByMonth(_that.month);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  getRecentTransaction,required TResult Function( DateTime month)  getTransactionByMonth,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  getRecentTransaction,required TResult Function( DateTime month)  getTransactionByMonth,required TResult Function( String dateRange)  onDateRangeChange,}) {final _that = this;
 switch (_that) {
 case GetRecentTransactionEvent():
 return getRecentTransaction();case GetTransactionByMonthEvent():
-return getTransactionByMonth(_that.month);}
+return getTransactionByMonth(_that.month);case OnDateRangeChangeEvent():
+return onDateRangeChange(_that.dateRange);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -159,11 +164,12 @@ return getTransactionByMonth(_that.month);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  getRecentTransaction,TResult? Function( DateTime month)?  getTransactionByMonth,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  getRecentTransaction,TResult? Function( DateTime month)?  getTransactionByMonth,TResult? Function( String dateRange)?  onDateRangeChange,}) {final _that = this;
 switch (_that) {
 case GetRecentTransactionEvent() when getRecentTransaction != null:
 return getRecentTransaction();case GetTransactionByMonthEvent() when getTransactionByMonth != null:
-return getTransactionByMonth(_that.month);case _:
+return getTransactionByMonth(_that.month);case OnDateRangeChangeEvent() when onDateRangeChange != null:
+return onDateRangeChange(_that.dateRange);case _:
   return null;
 
 }
@@ -263,6 +269,72 @@ class _$GetTransactionByMonthEventCopyWithImpl<$Res>
   return _then(GetTransactionByMonthEvent(
 null == month ? _self.month : month // ignore: cast_nullable_to_non_nullable
 as DateTime,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class OnDateRangeChangeEvent implements HomeEvent {
+  const OnDateRangeChangeEvent(this.dateRange);
+  
+
+ final  String dateRange;
+
+/// Create a copy of HomeEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OnDateRangeChangeEventCopyWith<OnDateRangeChangeEvent> get copyWith => _$OnDateRangeChangeEventCopyWithImpl<OnDateRangeChangeEvent>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnDateRangeChangeEvent&&(identical(other.dateRange, dateRange) || other.dateRange == dateRange));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,dateRange);
+
+@override
+String toString() {
+  return 'HomeEvent.onDateRangeChange(dateRange: $dateRange)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $OnDateRangeChangeEventCopyWith<$Res> implements $HomeEventCopyWith<$Res> {
+  factory $OnDateRangeChangeEventCopyWith(OnDateRangeChangeEvent value, $Res Function(OnDateRangeChangeEvent) _then) = _$OnDateRangeChangeEventCopyWithImpl;
+@useResult
+$Res call({
+ String dateRange
+});
+
+
+
+
+}
+/// @nodoc
+class _$OnDateRangeChangeEventCopyWithImpl<$Res>
+    implements $OnDateRangeChangeEventCopyWith<$Res> {
+  _$OnDateRangeChangeEventCopyWithImpl(this._self, this._then);
+
+  final OnDateRangeChangeEvent _self;
+  final $Res Function(OnDateRangeChangeEvent) _then;
+
+/// Create a copy of HomeEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? dateRange = null,}) {
+  return _then(OnDateRangeChangeEvent(
+null == dateRange ? _self.dateRange : dateRange // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
