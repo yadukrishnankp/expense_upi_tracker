@@ -8,9 +8,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/injection_container.dart';
 import '../../../core/utils/app_date_time_utils.dart';
 import '../../../shared/widget/app_toast.dart';
 import '../../../shared/widget/loading_dialog.dart';
+import '../../home/bloc/home_bloc.dart';
+import '../../home/event/home_event.dart';
 import '../../income/state/add_income_state.dart';
 
 class AddExpenseScreen extends StatefulWidget {
@@ -92,6 +95,8 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         LoadingDialog.close(context);
         if(state.message?.isNotEmpty ?? false){
           AppToast.showInfoToast(state.message!, context);
+          final homeBloc = sl.get<HomeBloc>();
+          homeBloc.add(HomeEvent.getRecentTransaction());
           context.pop();
         }
       }

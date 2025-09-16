@@ -1,5 +1,7 @@
 import 'package:e_tracker_upi/core/utils/app_date_time_utils.dart';
 import 'package:e_tracker_upi/core/utils/id_generator.dart';
+import 'package:e_tracker_upi/presentation/home/bloc/home_bloc.dart';
+import 'package:e_tracker_upi/presentation/home/event/home_event.dart';
 import 'package:e_tracker_upi/presentation/income/bloc/add_income_bloc.dart';
 import 'package:e_tracker_upi/presentation/income/event/add_income_event.dart';
 import 'package:e_tracker_upi/presentation/income/state/add_income_state.dart';
@@ -11,6 +13,8 @@ import 'package:e_tracker_upi/core/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+
+import '../../../core/injection_container.dart';
 
 class AddIncomeScreen extends StatefulWidget {
   const AddIncomeScreen({super.key});
@@ -96,6 +100,8 @@ class _AddIncomeScreenState extends State<AddIncomeScreen> {
         LoadingDialog.close(context);
         if(state.message?.isNotEmpty ?? false){
           AppToast.showInfoToast(state.message!, context);
+          final homeBloc = sl.get<HomeBloc>();
+          homeBloc.add(HomeEvent.getRecentTransaction());
           context.pop();
         }
       }

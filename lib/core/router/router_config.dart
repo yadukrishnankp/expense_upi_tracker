@@ -1,6 +1,7 @@
 import 'package:e_tracker_upi/presentation/auth/screens/signup_screen.dart';
 import 'package:e_tracker_upi/presentation/expense/bloc/AddExpenseBloc.dart';
 import 'package:e_tracker_upi/presentation/financial_report/screen/financial_report_screen.dart';
+import 'package:e_tracker_upi/presentation/home/bloc/home_bloc.dart';
 import 'package:e_tracker_upi/presentation/home/screens/app_home.dart';
 import 'package:e_tracker_upi/presentation/home/screens/home_screen.dart';
 import 'package:e_tracker_upi/presentation/income/bloc/add_income_bloc.dart';
@@ -36,7 +37,9 @@ final GoRouter routerConfig = GoRouter(
         print("shell route listen");
         HomeInjectionContainer.init();
         return   MultiBlocProvider(
-          providers: [          BlocProvider<AppHomeBloc>(create: (context) => sl<AppHomeBloc>(),),
+          providers: [
+            BlocProvider<AppHomeBloc>(create: (context) => sl<AppHomeBloc>(),),
+            BlocProvider<HomeBloc>(create: (context) => sl<HomeBloc>(),),
             BlocProvider<ProfileBloc>(create: (context) => sl<ProfileBloc>(),)
           ],
             child: AppHome(child: child));

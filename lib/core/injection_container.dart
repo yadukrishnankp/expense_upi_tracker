@@ -14,6 +14,7 @@ import 'package:e_tracker_upi/domain/usecase/auth/signin_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/auth/signup_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/add_expense_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/add_income_usecase.dart';
+import 'package:e_tracker_upi/domain/usecase/transaction/get_transaction_between_date_usecase.dart';
 import 'package:e_tracker_upi/presentation/auth/bloc/login_bloc.dart';
 import 'package:e_tracker_upi/presentation/auth/bloc/signup_bloc.dart';
 import 'package:e_tracker_upi/presentation/profile/bloc/profile_bloc.dart';
@@ -57,6 +58,7 @@ Future<void> init() async {
   sl.registerLazySingleton<TransactionRepo>(() => TransactionRepoImpl(transactionRemoteDatasource: sl()));
   sl.registerLazySingleton<AddIncomeUseCase>(() => AddIncomeUseCase(transactionRepo: sl()),);
   sl.registerLazySingleton<AddExpenseUseCase>(() => AddExpenseUseCase(transactionRepo: sl()),);
+  sl.registerLazySingleton<GetTransactionBetweenDateUseCase>(() => GetTransactionBetweenDateUseCase(transactionRepo: sl()),);
 
 
 

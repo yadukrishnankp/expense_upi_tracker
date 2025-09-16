@@ -25,6 +25,7 @@ class AddExpenseBloc extends Bloc<AddExpenseEvent,AddExpenseState>{
         id: id, category: state.addExpenseData.category,
         wallet: state.addExpenseData.wallet, type: "Expense",
         dateTime: state.addExpenseData.dateTime,
+        description: state.addExpenseData.description ?? "",
         createdTime: DateTime.now(),
         amount: state.addExpenseData.amount));
     result.fold((l) => emit(AddExpenseState.error(addExpenseData: state.addExpenseData, error: l)),

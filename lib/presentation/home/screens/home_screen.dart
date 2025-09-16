@@ -1,7 +1,16 @@
+import 'package:e_tracker_upi/core/network/state/firestore_fetch_state.dart';
 import 'package:e_tracker_upi/core/style/style_extension.dart';
 import 'package:e_tracker_upi/core/theme/app_colors.dart';
+import 'package:e_tracker_upi/domain/entity/transaction/transaction_entity.dart';
+import 'package:e_tracker_upi/presentation/home/bloc/home_bloc.dart';
+import 'package:e_tracker_upi/presentation/home/event/home_event.dart';
+import 'package:e_tracker_upi/presentation/home/state/home_state.dart';
+import 'package:e_tracker_upi/presentation/home/widgets/transaction_list_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../core/injection_container.dart';
 import '../widgets/income_expense_chart.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,6 +21,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    final homeBloc= sl.get<HomeBloc>();
+    homeBloc.state.transactionList.when(initial: () {
+      context.read<HomeBloc>().add(HomeEvent.getTransactionByMonth(DateTime.now()));
+      context.read<HomeBloc>().add(HomeEvent.getRecentTransaction());
+    }, loading: () {
+
+    }, success: (data) {
+
+    }, failure: (message) {
+
+    },);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -225,9 +249,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-           Container(
-              height: 300,
-                child: buildChart()),
+           // Container(
+           //    height: 300,
+           //      child: buildChart()),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               child: SingleChildScrollView(
@@ -293,83 +317,46 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Color(0xffFCFCFC),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: ListTile(
-                      leading: Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: appColorLightYellow,
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Icon(
-                          index % 2 == 0
-                            ? Icons.shopping_cart_rounded
-                            : Icons.subscriptions_rounded,
-                          color: appColorYellow,
-                          size: 24,
-                        ),
-                      ),
-                      title: Text(
-                        index % 2 == 0 ? "Grocery" : "Subscription",
-                        style: context.appInterTextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      subtitle: Text(
-                        index % 2 == 0
-                          ? "Bought vegetables and fruits"
-                          : "Monthly streaming service",
-                        style: context.appInterTextStyle(
-                          fontSize: 13,
-                          color: appSecondaryColor,
-                        ),
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            index % 3 == 0
-                              ? '+₹${(index + 1) * 100}'
-                              : '-₹${(index + 1) * 100}',
-                            style: context.appInterTextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: index % 3 == 0 ? appColorGreen : appColorRed,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Oct ${10 + index}',
-                            style: context.appInterTextStyle(
-                              fontSize: 12,
-                              color: appSecondaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            )
+          BlocBuilder<HomeBloc,HomeState>(builder: (context, state) {
+            final fakeList = List.filled(5, TransactionEntity(
+              id: "",
+              category: "Shopping",
+              wallet: "",
+              dateTime: DateTime.now()    ,
+              createdDate: "", type: '',
+              createdTime: DateTime.now(),
+              amount: 1239,
+              formattedDate: '',
+              formattedTime: '',
+              createdTimeFormatted: '',
+            ));
+          return  state.transactionList.when(initial: () {
+            return  _transactionList(fakeList, true);
+          }, loading: () {
+            return  _transactionList(fakeList, true);
+            }, success: (data) {
+             return  _transactionList(data, false);
+            }, failure: (message) {
+              return Container();
+            },);
+          },)
 
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _transactionList(List<TransactionEntity> list,bool loading){
+    return      Skeletonizer(
+      enabled: loading,
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          return  TransactionListTile(entity: list[index]);
+        },
       ),
     );
   }

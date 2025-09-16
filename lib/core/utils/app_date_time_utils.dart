@@ -19,4 +19,19 @@ class AppDateTimeUtils{
   }
 
   static String _twoDigits(int n) => n.toString().padLeft(2, '0');
+
+
+ static AppDateModel getMonthStartAndEnd(DateTime date) {
+    final startDate = DateTime(date.year, date.month, 1);
+    final endDate = DateTime(date.year, date.month + 1, 0); // 0 gives last day of previous month
+    return AppDateModel(startDate: startDate, endDate: endDate);
+  }
+}
+
+
+class AppDateModel{
+  final DateTime startDate;
+  final DateTime endDate;
+
+  AppDateModel({required this.startDate, required this.endDate});
 }
