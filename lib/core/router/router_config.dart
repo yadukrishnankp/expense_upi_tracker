@@ -9,6 +9,7 @@ import 'package:e_tracker_upi/presentation/income/screens/add_income_screen.dart
 import 'package:e_tracker_upi/presentation/notes/screens/add_note_screen.dart';
 import 'package:e_tracker_upi/presentation/notes/screens/notes_screen.dart';
 import 'package:e_tracker_upi/presentation/profile/screen/profile_screen.dart';
+import 'package:e_tracker_upi/presentation/transactions/bloc/transaction_bloc.dart';
 import 'package:e_tracker_upi/presentation/transactions/screens/transaction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +41,8 @@ final GoRouter routerConfig = GoRouter(
           providers: [
             BlocProvider<AppHomeBloc>(create: (context) => sl<AppHomeBloc>(),),
             BlocProvider<HomeBloc>(create: (context) => sl<HomeBloc>(),),
-            BlocProvider<ProfileBloc>(create: (context) => sl<ProfileBloc>(),)
+            BlocProvider<ProfileBloc>(create: (context) => sl<ProfileBloc>(),),
+            BlocProvider<TransactionBloc>(create: (context) => sl<TransactionBloc>(),)
           ],
             child: AppHome(child: child));
       },
@@ -80,13 +82,13 @@ final GoRouter routerConfig = GoRouter(
     GoRoute(path: AppRoute.add_expense.path,
       name: AppRoute.add_expense.name,
       builder: (BuildContext context, GoRouterState state) {
-        return BlocProvider(create: (context) => AddExpenseBloc(addExpenseUseCase: sl()),child: const AddExpenseScreen(),);
+        return BlocProvider(create: (context) => AddExpenseBloc(addExpenseUseCase: sl(),preferenceRepo: sl()),child: const AddExpenseScreen(),);
       },
     ),
     GoRoute(path: AppRoute.add_income.path,
       name: AppRoute.add_income.name,
       builder: (BuildContext context, GoRouterState state) {
-        return BlocProvider<AddIncomeBloc>(create: (context) => AddIncomeBloc(addExpenseUseCase: sl()),child: const AddIncomeScreen(),);
+        return BlocProvider<AddIncomeBloc>(create: (context) => AddIncomeBloc(addExpenseUseCase: sl(),preferenceRepo: sl()),child: const AddIncomeScreen(),);
       },
     ),
     GoRoute(path: AppRoute.financial_report.path,

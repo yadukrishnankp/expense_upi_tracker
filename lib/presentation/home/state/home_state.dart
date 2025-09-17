@@ -16,6 +16,7 @@ sealed class HomeState with _$HomeState{
        DateRangeItem(name: "Weekly", isSelected: false),
        DateRangeItem(name: "Monthly", isSelected: false)]) List<DateRangeItem> dateRangeItem,
     @Default(DateRange.Today) DateRange dateRange,
+   @Default([]) List<TransactionEntity> monthlyTransactionList
   }) = _HomeState;
 }
 
@@ -28,6 +29,7 @@ sealed class MonthlyReport with _$MonthlyReport{
     required double netBalance
 }) = _MonthlyReport;
 }
+
 
 
 @freezed

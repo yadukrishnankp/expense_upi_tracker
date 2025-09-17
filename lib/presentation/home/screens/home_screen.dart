@@ -1,6 +1,7 @@
 import 'package:e_tracker_upi/core/network/state/firestore_fetch_state.dart';
 import 'package:e_tracker_upi/core/style/style_extension.dart';
 import 'package:e_tracker_upi/core/theme/app_colors.dart';
+import 'package:e_tracker_upi/core/utils/app_date_time_utils.dart';
 import 'package:e_tracker_upi/domain/entity/transaction/transaction_entity.dart';
 import 'package:e_tracker_upi/presentation/home/bloc/home_bloc.dart';
 import 'package:e_tracker_upi/presentation/home/event/home_event.dart';
@@ -67,9 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.keyboard_arrow_down, color: appPrimaryColor),
+              // Icon(Icons.keyboard_arrow_down, color: appPrimaryColor),
               Text(
-                "October",
+                AppDateTimeUtils.getShortMonthYear(DateTime.now()),
                 style: context.appInterTextStyle(
                     fontWeight: FontWeight.w500, fontSize: 18),
               )
@@ -121,7 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                 Padding(
+               BlocBuilder<HomeBloc,HomeState>(builder: (context, state) {
+                 return   Padding(
                    padding: const EdgeInsets.symmetric(vertical: 10),
                    child: Center(
                      child: RichText(text: TextSpan(
@@ -132,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                        ),
                        children: [
                          TextSpan(
-                           text: '400000',
+                           text: state.monthlyReport.netBalance.toString(),
                            style:  context.appInterTextStyle(
                              fontSize: 40,
                              fontWeight: FontWeight.w600,
@@ -141,7 +143,8 @@ class _HomeScreenState extends State<HomeScreen> {
                        ],
                      )),
                    ),
-                 ),
+                 );
+               },),
                   Container(
                     child: Row(
                       children: [
@@ -180,12 +183,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                       )),
-                                    Text("₹20000",
-                                      style: context.appInterTextStyle(
-                                        color: appLightColor,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w600,
-                                      )),
+                                    BlocBuilder<HomeBloc,HomeState>(builder: (context, state) => Text("₹${state.monthlyReport.income}",
+                                        style: context.appInterTextStyle(
+                                          color: appLightColor,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w600,
+                                        )),),
                                   ],
                                 ),
                               ))
@@ -227,12 +230,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                           fontSize: 14,
                                           fontWeight: FontWeight.w500,
                                         )),
-                                    Text("₹20000",
-                                        style: context.appInterTextStyle(
-                                          color: appLightColor,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w600,
-                                        )),
+                                   BlocBuilder<HomeBloc,HomeState>(builder: (context, state) =>  Text("₹${state.monthlyReport.expense}",
+                                       style: context.appInterTextStyle(
+                                         color: appLightColor,
+                                         fontSize: 22,
+                                         fontWeight: FontWeight.w600,
+                                       )),),
                                   ],
                                 ),
                               ))
@@ -250,9 +253,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-           // Container(
-           //    height: 300,
-           //      child: buildChart()),
+          BlocBuilder<HomeBloc,HomeState>(builder: (context, state) {
+            return state.monthlyTransactionList.isNotEmpty ?  Container(
+                height: 300,
+                child: buildChart(state.monthlyTransactionList)) : Container();
+          },),
             Padding(
               padding: const EdgeInsets.only(left: 15,top: 15,bottom: 5),
               child: Align(
@@ -295,6 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BlocBuilder<HomeBloc,HomeState>(builder: (context, state) {
             final fakeList = List.filled(5, TransactionEntity(
               id: "",
+              userId: "",
               category: "Shopping",
               wallet: "",
               dateTime: DateTime.now()    ,
@@ -339,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildChart() {
-    return LineChartSample1(); // ✅ Correct
+  Widget buildChart(List<TransactionEntity> list) {
+    return LineChartSample1(list: list,); // ✅ Correct
   }
 }

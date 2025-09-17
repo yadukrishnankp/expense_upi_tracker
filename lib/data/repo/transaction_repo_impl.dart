@@ -4,6 +4,8 @@ import 'package:e_tracker_upi/data/datasources/transaction_remote_datasource.dar
 import 'package:e_tracker_upi/data/model/transaction/transaction_model.dart';
 import 'package:e_tracker_upi/domain/repo/transaction_repo.dart';
 
+import '../model/transaction/transaction_filter_model.dart';
+
 class TransactionRepoImpl extends TransactionRepo {
   final TransactionRemoteDatasource transactionRemoteDatasource;
 
@@ -31,6 +33,23 @@ class TransactionRepoImpl extends TransactionRepo {
        return   TransactionModel.fromJson(e.data());
         }).cast<TransactionModel>().toList();
         print("getTransactionBetweenDate size  ${list.length}");
+        return Right(list);
+      },
+    );
+  }
+
+  @override
+  Future<Either<String, List<TransactionModel>>> getTransactionFilter(TransactionFilterModel model)async {
+    final result = await transactionRemoteDatasource.getTransactionFilter(model);
+    return result.fold(
+          (l) {
+        return Left(l);
+      },
+          (r) {
+        List<TransactionModel> list  = r.docs.map((e) {
+          return   TransactionModel.fromJson(e.data());
+        }).cast<TransactionModel>().toList();
+        print("getTransactionFilter size  ${list.length}");
         return Right(list);
       },
     );

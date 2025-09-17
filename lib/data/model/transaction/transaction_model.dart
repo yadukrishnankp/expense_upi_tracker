@@ -28,6 +28,7 @@ class TimestampDateTimeConverter implements JsonConverter<DateTime, Object?> {
 sealed class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
     required String id,
+    required String userId,
     required String category,
     required String wallet,
     required String type,

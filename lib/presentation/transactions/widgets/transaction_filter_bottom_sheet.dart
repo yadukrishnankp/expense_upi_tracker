@@ -1,6 +1,12 @@
 import 'package:e_tracker_upi/core/style/style_extension.dart';
 import 'package:e_tracker_upi/core/theme/app_colors.dart';
+import 'package:e_tracker_upi/presentation/home/bloc/home_bloc.dart';
+import 'package:e_tracker_upi/presentation/transactions/bloc/transaction_bloc.dart';
+import 'package:e_tracker_upi/presentation/transactions/event/transaction_event.dart';
+import 'package:e_tracker_upi/presentation/transactions/state/transaction_state.dart';
+import 'package:e_tracker_upi/presentation/transactions/widgets/filter_chip_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TransactionFilterBottomSheet extends StatefulWidget {
   const TransactionFilterBottomSheet({super.key});
@@ -11,15 +17,15 @@ class TransactionFilterBottomSheet extends StatefulWidget {
 
 class _TransactionFilterBottomSheetState extends State<TransactionFilterBottomSheet> {
   // Add filter type state
-  final List<String> _filterTypes = ["All", "Income", "Expense", "Subscription", "Grocery"];
+  final List<String> _filterTypes = ["Income", "Expense",];
   int _selectedTypeIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.9,
-      maxChildSize: 1.0,
-      minChildSize: 0.9,
+      initialChildSize: 0.6,
+      maxChildSize: 0.8,
+      minChildSize: 0.5,
       builder: (context, scrollController) {
         return Container(
           decoration: BoxDecoration(
@@ -63,16 +69,21 @@ class _TransactionFilterBottomSheetState extends State<TransactionFilterBottomSh
                               ),
                             ),
                             Spacer(),
-                            Container(
-                              decoration: context.capsuleTextViewFilledShape(appPrimaryColorLight),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
-                                child: Text(
-                                  "Reset",
-                                  style: context.appInterTextStyle(
-                                    color: appPrimaryColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 15,
+                            GestureDetector(
+                              onTap: () {
+                                context.read<TransactionBloc>().add(TransactionEvent.onReset());
+                              },
+                              child: Container(
+                                decoration: context.capsuleTextViewFilledShape(appPrimaryColorLight),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+                                  child: Text(
+                                    "Reset",
+                                    style: context.appInterTextStyle(
+                                      color: appPrimaryColor,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 15,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -81,78 +92,25 @@ class _TransactionFilterBottomSheetState extends State<TransactionFilterBottomSh
                         ),
                         const SizedBox(height: 24),
                         Text(
-                          "Filter by",
+                          "Filter by Type",
                           style: context.appInterTextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 16,
                           ),
                         ),
                         const SizedBox(height: 12),
-                        Wrap(
+                        BlocBuilder<TransactionBloc,TransactionState>(builder: (context, state) => Wrap(
                           spacing: 8,
                           runSpacing: 8,
-                          children: List.generate(_filterTypes.length, (index) {
-                            final isSelected = _selectedTypeIndex == index;
+                          children: List.generate(state.filterTypeList.length, (index) {
                             return GestureDetector(
                               onTap: () {
-                                setState(() {
-                                  _selectedTypeIndex = index;
-                                });
+                               context.read<TransactionBloc>().add(TransactionEvent.onFilterTypeChangeEvent(state.filterTypeList[index].name));
                               },
-                              child: Container(
-                                decoration: isSelected
-                                    ? context.capsuleTextViewFilledShape(appPrimaryColor)
-                                    : context.capsuleTextViewFilledShape(appPrimaryColorLight),
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                                child: Text(
-                                  _filterTypes[index],
-                                  style: context.appInterTextStyle(
-                                    color: isSelected ? appLightColor : appPrimaryColor,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
+                              child: FilterChipItem(filterItem: state.filterTypeList[index]),
                             );
                           }),
-                        ),
-                        const SizedBox(height: 24),
-                        Text(
-                          "Sort by",
-                          style: context.appInterTextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: [
-                            ...["Newest", "Oldest"].map((sort) {
-                              final isSelected = false; // Replace with your sort state logic
-                              return GestureDetector(
-                                onTap: () {
-                                  // setState(() { ... });
-                                },
-                                child: Container(
-                                  decoration: isSelected
-                                      ? context.capsuleTextViewFilledShape(appPrimaryColor)
-                                      : context.capsuleTextViewFilledShape(appPrimaryColorLight),
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                                  child: Text(
-                                    sort,
-                                    style: context.appInterTextStyle(
-                                      color: isSelected ? appLightColor : appPrimaryColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                          ],
-                        ),
+                        ),),
                         const SizedBox(height: 24),
                         Text(
                           "Filter by Category",
@@ -162,35 +120,60 @@ class _TransactionFilterBottomSheetState extends State<TransactionFilterBottomSh
                           ),
                         ),
                         const SizedBox(height: 12),
-                        Wrap(
+                        BlocBuilder<TransactionBloc,TransactionState>(builder: (context, state) => Wrap(
                           spacing: 8,
                           runSpacing: 8,
-                          children: [
-                            ...["All", "Food", "Shopping", "Bills", "Travel", "Health", "Other"].map((cat) {
-                              final isSelected = false; // Replace with your category state logic
-                              return GestureDetector(
-                                onTap: () {
-                                  // setState(() { ... });
-                                },
-                                child: Container(
-                                  decoration: isSelected
-                                      ? context.capsuleTextViewFilledShape(appPrimaryColor)
-                                      : context.capsuleTextViewFilledShape(appPrimaryColorLight),
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                                  child: Text(
-                                    cat,
-                                    style: context.appInterTextStyle(
-                                      color: isSelected ? appLightColor : appPrimaryColor,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                          ],
-                        ),
+                          children: List.generate(state.filterCategoryList.length, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                context.read<TransactionBloc>().add(TransactionEvent.onFilterCategoryChangeEvent(state.filterCategoryList[index].name));
+                              },
+                              child: FilterChipItem(filterItem: state.filterCategoryList[index]),
+                            );
+                          },),
+                        ),),
                         const SizedBox(height: 24),
+                        Text(
+                          "Filter by Wallet",
+                          style: context.appInterTextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        BlocBuilder<TransactionBloc,TransactionState>(builder: (context, state) => Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: List.generate(state.filterWalletList.length, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                context.read<TransactionBloc>().add(TransactionEvent.onFilterWalletChangeEvent(state.filterWalletList[index].name));
+                              },
+                              child: FilterChipItem(filterItem: state.filterWalletList[index]),
+                            );
+                          },),
+                        ),),
+                        const SizedBox(height: 24),
+                        Text(
+                          "Sort by",
+                          style: context.appInterTextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        BlocBuilder<TransactionBloc,TransactionState>(builder: (context, state) => Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: List.generate(state.sortByDateList.length, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                context.read<TransactionBloc>().add(TransactionEvent.onSortByDateChangeEvent(state.sortByDateList[index].name));
+                              },
+                              child: FilterChipItem(filterItem: state.sortByDateList[index]),
+                            );
+                          },),
+                        ),),
                       ],
                     ),
                   ),

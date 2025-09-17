@@ -43,6 +43,15 @@ class AppDateTimeUtils{
     DateTime endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59, 999);
     return AppDateModel (startDate: startOfDay,endDate: endOfDay);
   }
+
+  static String getShortMonthYear(DateTime date) {
+    final shortMonths = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    return "${shortMonths[date.month - 1]} ${date.year}";
+  }
 }
 
 

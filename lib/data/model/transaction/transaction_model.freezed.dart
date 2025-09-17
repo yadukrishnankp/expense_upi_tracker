@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TransactionModel {
 
- String get id; String get category; String get wallet; String get type; String? get description;@TimestampDateTimeConverter() DateTime get dateTime;@TimestampDateTimeConverter() DateTime get createdTime; double get amount;
+ String get id; String get userId; String get category; String get wallet; String get type; String? get description;@TimestampDateTimeConverter() DateTime get dateTime;@TimestampDateTimeConverter() DateTime get createdTime; double get amount;
 /// Create a copy of TransactionModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TransactionModelCopyWith<TransactionModel> get copyWith => _$TransactionModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.wallet, wallet) || other.wallet == wallet)&&(identical(other.type, type) || other.type == type)&&(identical(other.description, description) || other.description == description)&&(identical(other.dateTime, dateTime) || other.dateTime == dateTime)&&(identical(other.createdTime, createdTime) || other.createdTime == createdTime)&&(identical(other.amount, amount) || other.amount == amount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.category, category) || other.category == category)&&(identical(other.wallet, wallet) || other.wallet == wallet)&&(identical(other.type, type) || other.type == type)&&(identical(other.description, description) || other.description == description)&&(identical(other.dateTime, dateTime) || other.dateTime == dateTime)&&(identical(other.createdTime, createdTime) || other.createdTime == createdTime)&&(identical(other.amount, amount) || other.amount == amount));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,category,wallet,type,description,dateTime,createdTime,amount);
+int get hashCode => Object.hash(runtimeType,id,userId,category,wallet,type,description,dateTime,createdTime,amount);
 
 @override
 String toString() {
-  return 'TransactionModel(id: $id, category: $category, wallet: $wallet, type: $type, description: $description, dateTime: $dateTime, createdTime: $createdTime, amount: $amount)';
+  return 'TransactionModel(id: $id, userId: $userId, category: $category, wallet: $wallet, type: $type, description: $description, dateTime: $dateTime, createdTime: $createdTime, amount: $amount)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TransactionModelCopyWith<$Res>  {
   factory $TransactionModelCopyWith(TransactionModel value, $Res Function(TransactionModel) _then) = _$TransactionModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String category, String wallet, String type, String? description,@TimestampDateTimeConverter() DateTime dateTime,@TimestampDateTimeConverter() DateTime createdTime, double amount
+ String id, String userId, String category, String wallet, String type, String? description,@TimestampDateTimeConverter() DateTime dateTime,@TimestampDateTimeConverter() DateTime createdTime, double amount
 });
 
 
@@ -65,9 +65,10 @@ class _$TransactionModelCopyWithImpl<$Res>
 
 /// Create a copy of TransactionModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? category = null,Object? wallet = null,Object? type = null,Object? description = freezed,Object? dateTime = null,Object? createdTime = null,Object? amount = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? category = null,Object? wallet = null,Object? type = null,Object? description = freezed,Object? dateTime = null,Object? createdTime = null,Object? amount = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as String,wallet: null == wallet ? _self.wallet : wallet // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String category,  String wallet,  String type,  String? description, @TimestampDateTimeConverter()  DateTime dateTime, @TimestampDateTimeConverter()  DateTime createdTime,  double amount)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  String category,  String wallet,  String type,  String? description, @TimestampDateTimeConverter()  DateTime dateTime, @TimestampDateTimeConverter()  DateTime createdTime,  double amount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TransactionModel() when $default != null:
-return $default(_that.id,_that.category,_that.wallet,_that.type,_that.description,_that.dateTime,_that.createdTime,_that.amount);case _:
+return $default(_that.id,_that.userId,_that.category,_that.wallet,_that.type,_that.description,_that.dateTime,_that.createdTime,_that.amount);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.id,_that.category,_that.wallet,_that.type,_that.descriptio
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String category,  String wallet,  String type,  String? description, @TimestampDateTimeConverter()  DateTime dateTime, @TimestampDateTimeConverter()  DateTime createdTime,  double amount)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  String category,  String wallet,  String type,  String? description, @TimestampDateTimeConverter()  DateTime dateTime, @TimestampDateTimeConverter()  DateTime createdTime,  double amount)  $default,) {final _that = this;
 switch (_that) {
 case _TransactionModel():
-return $default(_that.id,_that.category,_that.wallet,_that.type,_that.description,_that.dateTime,_that.createdTime,_that.amount);}
+return $default(_that.id,_that.userId,_that.category,_that.wallet,_that.type,_that.description,_that.dateTime,_that.createdTime,_that.amount);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -195,10 +196,10 @@ return $default(_that.id,_that.category,_that.wallet,_that.type,_that.descriptio
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String category,  String wallet,  String type,  String? description, @TimestampDateTimeConverter()  DateTime dateTime, @TimestampDateTimeConverter()  DateTime createdTime,  double amount)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  String category,  String wallet,  String type,  String? description, @TimestampDateTimeConverter()  DateTime dateTime, @TimestampDateTimeConverter()  DateTime createdTime,  double amount)?  $default,) {final _that = this;
 switch (_that) {
 case _TransactionModel() when $default != null:
-return $default(_that.id,_that.category,_that.wallet,_that.type,_that.description,_that.dateTime,_that.createdTime,_that.amount);case _:
+return $default(_that.id,_that.userId,_that.category,_that.wallet,_that.type,_that.description,_that.dateTime,_that.createdTime,_that.amount);case _:
   return null;
 
 }
@@ -210,10 +211,11 @@ return $default(_that.id,_that.category,_that.wallet,_that.type,_that.descriptio
 @JsonSerializable()
 
 class _TransactionModel implements TransactionModel {
-  const _TransactionModel({required this.id, required this.category, required this.wallet, required this.type, this.description, @TimestampDateTimeConverter() required this.dateTime, @TimestampDateTimeConverter() required this.createdTime, required this.amount});
+  const _TransactionModel({required this.id, required this.userId, required this.category, required this.wallet, required this.type, this.description, @TimestampDateTimeConverter() required this.dateTime, @TimestampDateTimeConverter() required this.createdTime, required this.amount});
   factory _TransactionModel.fromJson(Map<String, dynamic> json) => _$TransactionModelFromJson(json);
 
 @override final  String id;
+@override final  String userId;
 @override final  String category;
 @override final  String wallet;
 @override final  String type;
@@ -235,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TransactionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.wallet, wallet) || other.wallet == wallet)&&(identical(other.type, type) || other.type == type)&&(identical(other.description, description) || other.description == description)&&(identical(other.dateTime, dateTime) || other.dateTime == dateTime)&&(identical(other.createdTime, createdTime) || other.createdTime == createdTime)&&(identical(other.amount, amount) || other.amount == amount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TransactionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.category, category) || other.category == category)&&(identical(other.wallet, wallet) || other.wallet == wallet)&&(identical(other.type, type) || other.type == type)&&(identical(other.description, description) || other.description == description)&&(identical(other.dateTime, dateTime) || other.dateTime == dateTime)&&(identical(other.createdTime, createdTime) || other.createdTime == createdTime)&&(identical(other.amount, amount) || other.amount == amount));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,category,wallet,type,description,dateTime,createdTime,amount);
+int get hashCode => Object.hash(runtimeType,id,userId,category,wallet,type,description,dateTime,createdTime,amount);
 
 @override
 String toString() {
-  return 'TransactionModel(id: $id, category: $category, wallet: $wallet, type: $type, description: $description, dateTime: $dateTime, createdTime: $createdTime, amount: $amount)';
+  return 'TransactionModel(id: $id, userId: $userId, category: $category, wallet: $wallet, type: $type, description: $description, dateTime: $dateTime, createdTime: $createdTime, amount: $amount)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$TransactionModelCopyWith<$Res> implements $TransactionMod
   factory _$TransactionModelCopyWith(_TransactionModel value, $Res Function(_TransactionModel) _then) = __$TransactionModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String category, String wallet, String type, String? description,@TimestampDateTimeConverter() DateTime dateTime,@TimestampDateTimeConverter() DateTime createdTime, double amount
+ String id, String userId, String category, String wallet, String type, String? description,@TimestampDateTimeConverter() DateTime dateTime,@TimestampDateTimeConverter() DateTime createdTime, double amount
 });
 
 
@@ -272,9 +274,10 @@ class __$TransactionModelCopyWithImpl<$Res>
 
 /// Create a copy of TransactionModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? category = null,Object? wallet = null,Object? type = null,Object? description = freezed,Object? dateTime = null,Object? createdTime = null,Object? amount = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? category = null,Object? wallet = null,Object? type = null,Object? description = freezed,Object? dateTime = null,Object? createdTime = null,Object? amount = null,}) {
   return _then(_TransactionModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as String,wallet: null == wallet ? _self.wallet : wallet // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable

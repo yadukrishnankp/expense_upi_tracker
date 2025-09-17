@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomeState {
 
- MonthlyReport get monthlyReport; FirestoreFetchState<List<TransactionEntity>> get transactionList; List<DateRangeItem> get dateRangeItem; DateRange get dateRange;
+ MonthlyReport get monthlyReport; FirestoreFetchState<List<TransactionEntity>> get transactionList; List<DateRangeItem> get dateRangeItem; DateRange get dateRange; List<TransactionEntity> get monthlyTransactionList;
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $HomeStateCopyWith<HomeState> get copyWith => _$HomeStateCopyWithImpl<HomeState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&(identical(other.monthlyReport, monthlyReport) || other.monthlyReport == monthlyReport)&&(identical(other.transactionList, transactionList) || other.transactionList == transactionList)&&const DeepCollectionEquality().equals(other.dateRangeItem, dateRangeItem)&&(identical(other.dateRange, dateRange) || other.dateRange == dateRange));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeState&&(identical(other.monthlyReport, monthlyReport) || other.monthlyReport == monthlyReport)&&(identical(other.transactionList, transactionList) || other.transactionList == transactionList)&&const DeepCollectionEquality().equals(other.dateRangeItem, dateRangeItem)&&(identical(other.dateRange, dateRange) || other.dateRange == dateRange)&&const DeepCollectionEquality().equals(other.monthlyTransactionList, monthlyTransactionList));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,monthlyReport,transactionList,const DeepCollectionEquality().hash(dateRangeItem),dateRange);
+int get hashCode => Object.hash(runtimeType,monthlyReport,transactionList,const DeepCollectionEquality().hash(dateRangeItem),dateRange,const DeepCollectionEquality().hash(monthlyTransactionList));
 
 @override
 String toString() {
-  return 'HomeState(monthlyReport: $monthlyReport, transactionList: $transactionList, dateRangeItem: $dateRangeItem, dateRange: $dateRange)';
+  return 'HomeState(monthlyReport: $monthlyReport, transactionList: $transactionList, dateRangeItem: $dateRangeItem, dateRange: $dateRange, monthlyTransactionList: $monthlyTransactionList)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $HomeStateCopyWith<$Res>  {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) _then) = _$HomeStateCopyWithImpl;
 @useResult
 $Res call({
- MonthlyReport monthlyReport, FirestoreFetchState<List<TransactionEntity>> transactionList, List<DateRangeItem> dateRangeItem, DateRange dateRange
+ MonthlyReport monthlyReport, FirestoreFetchState<List<TransactionEntity>> transactionList, List<DateRangeItem> dateRangeItem, DateRange dateRange, List<TransactionEntity> monthlyTransactionList
 });
 
 
@@ -62,13 +62,14 @@ class _$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? monthlyReport = null,Object? transactionList = null,Object? dateRangeItem = null,Object? dateRange = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? monthlyReport = null,Object? transactionList = null,Object? dateRangeItem = null,Object? dateRange = null,Object? monthlyTransactionList = null,}) {
   return _then(_self.copyWith(
 monthlyReport: null == monthlyReport ? _self.monthlyReport : monthlyReport // ignore: cast_nullable_to_non_nullable
 as MonthlyReport,transactionList: null == transactionList ? _self.transactionList : transactionList // ignore: cast_nullable_to_non_nullable
 as FirestoreFetchState<List<TransactionEntity>>,dateRangeItem: null == dateRangeItem ? _self.dateRangeItem : dateRangeItem // ignore: cast_nullable_to_non_nullable
 as List<DateRangeItem>,dateRange: null == dateRange ? _self.dateRange : dateRange // ignore: cast_nullable_to_non_nullable
-as DateRange,
+as DateRange,monthlyTransactionList: null == monthlyTransactionList ? _self.monthlyTransactionList : monthlyTransactionList // ignore: cast_nullable_to_non_nullable
+as List<TransactionEntity>,
   ));
 }
 /// Create a copy of HomeState
@@ -168,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( MonthlyReport monthlyReport,  FirestoreFetchState<List<TransactionEntity>> transactionList,  List<DateRangeItem> dateRangeItem,  DateRange dateRange)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( MonthlyReport monthlyReport,  FirestoreFetchState<List<TransactionEntity>> transactionList,  List<DateRangeItem> dateRangeItem,  DateRange dateRange,  List<TransactionEntity> monthlyTransactionList)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.monthlyReport,_that.transactionList,_that.dateRangeItem,_that.dateRange);case _:
+return $default(_that.monthlyReport,_that.transactionList,_that.dateRangeItem,_that.dateRange,_that.monthlyTransactionList);case _:
   return orElse();
 
 }
@@ -189,10 +190,10 @@ return $default(_that.monthlyReport,_that.transactionList,_that.dateRangeItem,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( MonthlyReport monthlyReport,  FirestoreFetchState<List<TransactionEntity>> transactionList,  List<DateRangeItem> dateRangeItem,  DateRange dateRange)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( MonthlyReport monthlyReport,  FirestoreFetchState<List<TransactionEntity>> transactionList,  List<DateRangeItem> dateRangeItem,  DateRange dateRange,  List<TransactionEntity> monthlyTransactionList)  $default,) {final _that = this;
 switch (_that) {
 case _HomeState():
-return $default(_that.monthlyReport,_that.transactionList,_that.dateRangeItem,_that.dateRange);}
+return $default(_that.monthlyReport,_that.transactionList,_that.dateRangeItem,_that.dateRange,_that.monthlyTransactionList);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -206,10 +207,10 @@ return $default(_that.monthlyReport,_that.transactionList,_that.dateRangeItem,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( MonthlyReport monthlyReport,  FirestoreFetchState<List<TransactionEntity>> transactionList,  List<DateRangeItem> dateRangeItem,  DateRange dateRange)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( MonthlyReport monthlyReport,  FirestoreFetchState<List<TransactionEntity>> transactionList,  List<DateRangeItem> dateRangeItem,  DateRange dateRange,  List<TransactionEntity> monthlyTransactionList)?  $default,) {final _that = this;
 switch (_that) {
 case _HomeState() when $default != null:
-return $default(_that.monthlyReport,_that.transactionList,_that.dateRangeItem,_that.dateRange);case _:
+return $default(_that.monthlyReport,_that.transactionList,_that.dateRangeItem,_that.dateRange,_that.monthlyTransactionList);case _:
   return null;
 
 }
@@ -221,7 +222,7 @@ return $default(_that.monthlyReport,_that.transactionList,_that.dateRangeItem,_t
 
 
 class _HomeState implements HomeState {
-  const _HomeState({this.monthlyReport = const MonthlyReport(income: 0.0, expense: 0.0, netBalance: 0.0), this.transactionList = const FirestoreFetchState.initial(), final  List<DateRangeItem> dateRangeItem = const [DateRangeItem(name: "Today", isSelected: true), DateRangeItem(name: "Weekly", isSelected: false), DateRangeItem(name: "Monthly", isSelected: false)], this.dateRange = DateRange.Today}): _dateRangeItem = dateRangeItem;
+  const _HomeState({this.monthlyReport = const MonthlyReport(income: 0.0, expense: 0.0, netBalance: 0.0), this.transactionList = const FirestoreFetchState.initial(), final  List<DateRangeItem> dateRangeItem = const [DateRangeItem(name: "Today", isSelected: true), DateRangeItem(name: "Weekly", isSelected: false), DateRangeItem(name: "Monthly", isSelected: false)], this.dateRange = DateRange.Today, final  List<TransactionEntity> monthlyTransactionList = const []}): _dateRangeItem = dateRangeItem,_monthlyTransactionList = monthlyTransactionList;
   
 
 @override@JsonKey() final  MonthlyReport monthlyReport;
@@ -234,6 +235,13 @@ class _HomeState implements HomeState {
 }
 
 @override@JsonKey() final  DateRange dateRange;
+ final  List<TransactionEntity> _monthlyTransactionList;
+@override@JsonKey() List<TransactionEntity> get monthlyTransactionList {
+  if (_monthlyTransactionList is EqualUnmodifiableListView) return _monthlyTransactionList;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_monthlyTransactionList);
+}
+
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
@@ -245,16 +253,16 @@ _$HomeStateCopyWith<_HomeState> get copyWith => __$HomeStateCopyWithImpl<_HomeSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&(identical(other.monthlyReport, monthlyReport) || other.monthlyReport == monthlyReport)&&(identical(other.transactionList, transactionList) || other.transactionList == transactionList)&&const DeepCollectionEquality().equals(other._dateRangeItem, _dateRangeItem)&&(identical(other.dateRange, dateRange) || other.dateRange == dateRange));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeState&&(identical(other.monthlyReport, monthlyReport) || other.monthlyReport == monthlyReport)&&(identical(other.transactionList, transactionList) || other.transactionList == transactionList)&&const DeepCollectionEquality().equals(other._dateRangeItem, _dateRangeItem)&&(identical(other.dateRange, dateRange) || other.dateRange == dateRange)&&const DeepCollectionEquality().equals(other._monthlyTransactionList, _monthlyTransactionList));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,monthlyReport,transactionList,const DeepCollectionEquality().hash(_dateRangeItem),dateRange);
+int get hashCode => Object.hash(runtimeType,monthlyReport,transactionList,const DeepCollectionEquality().hash(_dateRangeItem),dateRange,const DeepCollectionEquality().hash(_monthlyTransactionList));
 
 @override
 String toString() {
-  return 'HomeState(monthlyReport: $monthlyReport, transactionList: $transactionList, dateRangeItem: $dateRangeItem, dateRange: $dateRange)';
+  return 'HomeState(monthlyReport: $monthlyReport, transactionList: $transactionList, dateRangeItem: $dateRangeItem, dateRange: $dateRange, monthlyTransactionList: $monthlyTransactionList)';
 }
 
 
@@ -265,7 +273,7 @@ abstract mixin class _$HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Re
   factory _$HomeStateCopyWith(_HomeState value, $Res Function(_HomeState) _then) = __$HomeStateCopyWithImpl;
 @override @useResult
 $Res call({
- MonthlyReport monthlyReport, FirestoreFetchState<List<TransactionEntity>> transactionList, List<DateRangeItem> dateRangeItem, DateRange dateRange
+ MonthlyReport monthlyReport, FirestoreFetchState<List<TransactionEntity>> transactionList, List<DateRangeItem> dateRangeItem, DateRange dateRange, List<TransactionEntity> monthlyTransactionList
 });
 
 
@@ -282,13 +290,14 @@ class __$HomeStateCopyWithImpl<$Res>
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? monthlyReport = null,Object? transactionList = null,Object? dateRangeItem = null,Object? dateRange = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? monthlyReport = null,Object? transactionList = null,Object? dateRangeItem = null,Object? dateRange = null,Object? monthlyTransactionList = null,}) {
   return _then(_HomeState(
 monthlyReport: null == monthlyReport ? _self.monthlyReport : monthlyReport // ignore: cast_nullable_to_non_nullable
 as MonthlyReport,transactionList: null == transactionList ? _self.transactionList : transactionList // ignore: cast_nullable_to_non_nullable
 as FirestoreFetchState<List<TransactionEntity>>,dateRangeItem: null == dateRangeItem ? _self._dateRangeItem : dateRangeItem // ignore: cast_nullable_to_non_nullable
 as List<DateRangeItem>,dateRange: null == dateRange ? _self.dateRange : dateRange // ignore: cast_nullable_to_non_nullable
-as DateRange,
+as DateRange,monthlyTransactionList: null == monthlyTransactionList ? _self._monthlyTransactionList : monthlyTransactionList // ignore: cast_nullable_to_non_nullable
+as List<TransactionEntity>,
   ));
 }
 

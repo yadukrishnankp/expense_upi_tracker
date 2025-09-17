@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TransactionEntity {
 
- String get id; String get category; String get wallet; String get type; String? get description; DateTime get dateTime; DateTime get createdTime; double get amount; String get formattedDate; String get formattedTime; String get createdDate; String get createdTimeFormatted;
+ String get id; String get userId; String get category; String get wallet; String get type; String? get description; DateTime get dateTime; DateTime get createdTime; double get amount; String get formattedDate; String get formattedTime; String get createdDate; String get createdTimeFormatted;
 /// Create a copy of TransactionEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TransactionEntityCopyWith<TransactionEntity> get copyWith => _$TransactionEntit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.wallet, wallet) || other.wallet == wallet)&&(identical(other.type, type) || other.type == type)&&(identical(other.description, description) || other.description == description)&&(identical(other.dateTime, dateTime) || other.dateTime == dateTime)&&(identical(other.createdTime, createdTime) || other.createdTime == createdTime)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.formattedDate, formattedDate) || other.formattedDate == formattedDate)&&(identical(other.formattedTime, formattedTime) || other.formattedTime == formattedTime)&&(identical(other.createdDate, createdDate) || other.createdDate == createdDate)&&(identical(other.createdTimeFormatted, createdTimeFormatted) || other.createdTimeFormatted == createdTimeFormatted));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.category, category) || other.category == category)&&(identical(other.wallet, wallet) || other.wallet == wallet)&&(identical(other.type, type) || other.type == type)&&(identical(other.description, description) || other.description == description)&&(identical(other.dateTime, dateTime) || other.dateTime == dateTime)&&(identical(other.createdTime, createdTime) || other.createdTime == createdTime)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.formattedDate, formattedDate) || other.formattedDate == formattedDate)&&(identical(other.formattedTime, formattedTime) || other.formattedTime == formattedTime)&&(identical(other.createdDate, createdDate) || other.createdDate == createdDate)&&(identical(other.createdTimeFormatted, createdTimeFormatted) || other.createdTimeFormatted == createdTimeFormatted));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,category,wallet,type,description,dateTime,createdTime,amount,formattedDate,formattedTime,createdDate,createdTimeFormatted);
+int get hashCode => Object.hash(runtimeType,id,userId,category,wallet,type,description,dateTime,createdTime,amount,formattedDate,formattedTime,createdDate,createdTimeFormatted);
 
 @override
 String toString() {
-  return 'TransactionEntity(id: $id, category: $category, wallet: $wallet, type: $type, description: $description, dateTime: $dateTime, createdTime: $createdTime, amount: $amount, formattedDate: $formattedDate, formattedTime: $formattedTime, createdDate: $createdDate, createdTimeFormatted: $createdTimeFormatted)';
+  return 'TransactionEntity(id: $id, userId: $userId, category: $category, wallet: $wallet, type: $type, description: $description, dateTime: $dateTime, createdTime: $createdTime, amount: $amount, formattedDate: $formattedDate, formattedTime: $formattedTime, createdDate: $createdDate, createdTimeFormatted: $createdTimeFormatted)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $TransactionEntityCopyWith<$Res>  {
   factory $TransactionEntityCopyWith(TransactionEntity value, $Res Function(TransactionEntity) _then) = _$TransactionEntityCopyWithImpl;
 @useResult
 $Res call({
- String id, String category, String wallet, String type, String? description, DateTime dateTime, DateTime createdTime, double amount, String formattedDate, String formattedTime, String createdDate, String createdTimeFormatted
+ String id, String userId, String category, String wallet, String type, String? description, DateTime dateTime, DateTime createdTime, double amount, String formattedDate, String formattedTime, String createdDate, String createdTimeFormatted
 });
 
 
@@ -62,9 +62,10 @@ class _$TransactionEntityCopyWithImpl<$Res>
 
 /// Create a copy of TransactionEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? category = null,Object? wallet = null,Object? type = null,Object? description = freezed,Object? dateTime = null,Object? createdTime = null,Object? amount = null,Object? formattedDate = null,Object? formattedTime = null,Object? createdDate = null,Object? createdTimeFormatted = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? category = null,Object? wallet = null,Object? type = null,Object? description = freezed,Object? dateTime = null,Object? createdTime = null,Object? amount = null,Object? formattedDate = null,Object? formattedTime = null,Object? createdDate = null,Object? createdTimeFormatted = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as String,wallet: null == wallet ? _self.wallet : wallet // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -158,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String category,  String wallet,  String type,  String? description,  DateTime dateTime,  DateTime createdTime,  double amount,  String formattedDate,  String formattedTime,  String createdDate,  String createdTimeFormatted)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userId,  String category,  String wallet,  String type,  String? description,  DateTime dateTime,  DateTime createdTime,  double amount,  String formattedDate,  String formattedTime,  String createdDate,  String createdTimeFormatted)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TransactionEntity() when $default != null:
-return $default(_that.id,_that.category,_that.wallet,_that.type,_that.description,_that.dateTime,_that.createdTime,_that.amount,_that.formattedDate,_that.formattedTime,_that.createdDate,_that.createdTimeFormatted);case _:
+return $default(_that.id,_that.userId,_that.category,_that.wallet,_that.type,_that.description,_that.dateTime,_that.createdTime,_that.amount,_that.formattedDate,_that.formattedTime,_that.createdDate,_that.createdTimeFormatted);case _:
   return orElse();
 
 }
@@ -179,10 +180,10 @@ return $default(_that.id,_that.category,_that.wallet,_that.type,_that.descriptio
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String category,  String wallet,  String type,  String? description,  DateTime dateTime,  DateTime createdTime,  double amount,  String formattedDate,  String formattedTime,  String createdDate,  String createdTimeFormatted)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userId,  String category,  String wallet,  String type,  String? description,  DateTime dateTime,  DateTime createdTime,  double amount,  String formattedDate,  String formattedTime,  String createdDate,  String createdTimeFormatted)  $default,) {final _that = this;
 switch (_that) {
 case _TransactionEntity():
-return $default(_that.id,_that.category,_that.wallet,_that.type,_that.description,_that.dateTime,_that.createdTime,_that.amount,_that.formattedDate,_that.formattedTime,_that.createdDate,_that.createdTimeFormatted);}
+return $default(_that.id,_that.userId,_that.category,_that.wallet,_that.type,_that.description,_that.dateTime,_that.createdTime,_that.amount,_that.formattedDate,_that.formattedTime,_that.createdDate,_that.createdTimeFormatted);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -196,10 +197,10 @@ return $default(_that.id,_that.category,_that.wallet,_that.type,_that.descriptio
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String category,  String wallet,  String type,  String? description,  DateTime dateTime,  DateTime createdTime,  double amount,  String formattedDate,  String formattedTime,  String createdDate,  String createdTimeFormatted)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userId,  String category,  String wallet,  String type,  String? description,  DateTime dateTime,  DateTime createdTime,  double amount,  String formattedDate,  String formattedTime,  String createdDate,  String createdTimeFormatted)?  $default,) {final _that = this;
 switch (_that) {
 case _TransactionEntity() when $default != null:
-return $default(_that.id,_that.category,_that.wallet,_that.type,_that.description,_that.dateTime,_that.createdTime,_that.amount,_that.formattedDate,_that.formattedTime,_that.createdDate,_that.createdTimeFormatted);case _:
+return $default(_that.id,_that.userId,_that.category,_that.wallet,_that.type,_that.description,_that.dateTime,_that.createdTime,_that.amount,_that.formattedDate,_that.formattedTime,_that.createdDate,_that.createdTimeFormatted);case _:
   return null;
 
 }
@@ -211,10 +212,11 @@ return $default(_that.id,_that.category,_that.wallet,_that.type,_that.descriptio
 
 
 class _TransactionEntity implements TransactionEntity {
-  const _TransactionEntity({required this.id, required this.category, required this.wallet, required this.type, this.description, required this.dateTime, required this.createdTime, required this.amount, required this.formattedDate, required this.formattedTime, required this.createdDate, required this.createdTimeFormatted});
+  const _TransactionEntity({required this.id, required this.userId, required this.category, required this.wallet, required this.type, this.description, required this.dateTime, required this.createdTime, required this.amount, required this.formattedDate, required this.formattedTime, required this.createdDate, required this.createdTimeFormatted});
   
 
 @override final  String id;
+@override final  String userId;
 @override final  String category;
 @override final  String wallet;
 @override final  String type;
@@ -237,16 +239,16 @@ _$TransactionEntityCopyWith<_TransactionEntity> get copyWith => __$TransactionEn
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TransactionEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.wallet, wallet) || other.wallet == wallet)&&(identical(other.type, type) || other.type == type)&&(identical(other.description, description) || other.description == description)&&(identical(other.dateTime, dateTime) || other.dateTime == dateTime)&&(identical(other.createdTime, createdTime) || other.createdTime == createdTime)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.formattedDate, formattedDate) || other.formattedDate == formattedDate)&&(identical(other.formattedTime, formattedTime) || other.formattedTime == formattedTime)&&(identical(other.createdDate, createdDate) || other.createdDate == createdDate)&&(identical(other.createdTimeFormatted, createdTimeFormatted) || other.createdTimeFormatted == createdTimeFormatted));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TransactionEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.category, category) || other.category == category)&&(identical(other.wallet, wallet) || other.wallet == wallet)&&(identical(other.type, type) || other.type == type)&&(identical(other.description, description) || other.description == description)&&(identical(other.dateTime, dateTime) || other.dateTime == dateTime)&&(identical(other.createdTime, createdTime) || other.createdTime == createdTime)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.formattedDate, formattedDate) || other.formattedDate == formattedDate)&&(identical(other.formattedTime, formattedTime) || other.formattedTime == formattedTime)&&(identical(other.createdDate, createdDate) || other.createdDate == createdDate)&&(identical(other.createdTimeFormatted, createdTimeFormatted) || other.createdTimeFormatted == createdTimeFormatted));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,category,wallet,type,description,dateTime,createdTime,amount,formattedDate,formattedTime,createdDate,createdTimeFormatted);
+int get hashCode => Object.hash(runtimeType,id,userId,category,wallet,type,description,dateTime,createdTime,amount,formattedDate,formattedTime,createdDate,createdTimeFormatted);
 
 @override
 String toString() {
-  return 'TransactionEntity(id: $id, category: $category, wallet: $wallet, type: $type, description: $description, dateTime: $dateTime, createdTime: $createdTime, amount: $amount, formattedDate: $formattedDate, formattedTime: $formattedTime, createdDate: $createdDate, createdTimeFormatted: $createdTimeFormatted)';
+  return 'TransactionEntity(id: $id, userId: $userId, category: $category, wallet: $wallet, type: $type, description: $description, dateTime: $dateTime, createdTime: $createdTime, amount: $amount, formattedDate: $formattedDate, formattedTime: $formattedTime, createdDate: $createdDate, createdTimeFormatted: $createdTimeFormatted)';
 }
 
 
@@ -257,7 +259,7 @@ abstract mixin class _$TransactionEntityCopyWith<$Res> implements $TransactionEn
   factory _$TransactionEntityCopyWith(_TransactionEntity value, $Res Function(_TransactionEntity) _then) = __$TransactionEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String category, String wallet, String type, String? description, DateTime dateTime, DateTime createdTime, double amount, String formattedDate, String formattedTime, String createdDate, String createdTimeFormatted
+ String id, String userId, String category, String wallet, String type, String? description, DateTime dateTime, DateTime createdTime, double amount, String formattedDate, String formattedTime, String createdDate, String createdTimeFormatted
 });
 
 
@@ -274,9 +276,10 @@ class __$TransactionEntityCopyWithImpl<$Res>
 
 /// Create a copy of TransactionEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? category = null,Object? wallet = null,Object? type = null,Object? description = freezed,Object? dateTime = null,Object? createdTime = null,Object? amount = null,Object? formattedDate = null,Object? formattedTime = null,Object? createdDate = null,Object? createdTimeFormatted = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? category = null,Object? wallet = null,Object? type = null,Object? description = freezed,Object? dateTime = null,Object? createdTime = null,Object? amount = null,Object? formattedDate = null,Object? formattedTime = null,Object? createdDate = null,Object? createdTimeFormatted = null,}) {
   return _then(_TransactionEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as String,wallet: null == wallet ? _self.wallet : wallet // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable

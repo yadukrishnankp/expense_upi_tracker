@@ -47,6 +47,7 @@ dependencies:
   toastification: ^3.0.3
   intl: ^0.20.2
   skeletonizer: ^2.1.0+1
+  month_picker_dialog: ^6.5.0
 
 
 

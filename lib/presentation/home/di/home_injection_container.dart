@@ -1,6 +1,7 @@
 import 'package:e_tracker_upi/presentation/home/bloc/app_home_bloc.dart';
 import 'package:e_tracker_upi/presentation/home/bloc/home_bloc.dart';
 import 'package:e_tracker_upi/presentation/profile/bloc/profile_bloc.dart';
+import 'package:e_tracker_upi/presentation/transactions/bloc/transaction_bloc.dart';
 
 import '../../../core/injection_container.dart';
 
@@ -14,6 +15,10 @@ class HomeInjectionContainer {
     }
     if(! sl.isRegistered<HomeBloc>()){
       sl.registerLazySingleton(() => HomeBloc(getTransactionBetweenDateUseCase: sl()),);
+    }
+
+    if(!sl.isRegistered<TransactionBloc>()){
+      sl.registerLazySingleton<TransactionBloc>(() => TransactionBloc(getTransactionFilterUseCase: sl()),);
     }
   }
 }

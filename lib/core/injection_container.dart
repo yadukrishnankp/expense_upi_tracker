@@ -15,10 +15,7 @@ import 'package:e_tracker_upi/domain/usecase/auth/signup_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/add_expense_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/add_income_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/get_transaction_between_date_usecase.dart';
-import 'package:e_tracker_upi/presentation/auth/bloc/login_bloc.dart';
-import 'package:e_tracker_upi/presentation/auth/bloc/signup_bloc.dart';
-import 'package:e_tracker_upi/presentation/profile/bloc/profile_bloc.dart';
-import 'package:e_tracker_upi/presentation/splash/bloc/splash_bloc.dart';
+import 'package:e_tracker_upi/domain/usecase/transaction/get_transaction_filter_usecase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,11 +51,12 @@ Future<void> init() async {
   sl.registerLazySingleton<GetUserUseCase>(() => GetUserUseCase(authRepo: sl()),);
 
   //transaction
-  sl.registerLazySingleton<TransactionRemoteDatasource>(() => TransactionRemoteDatasourceImpl(firebaseFirestore: sl()),);
+  sl.registerLazySingleton<TransactionRemoteDatasource>(() => TransactionRemoteDatasourceImpl(firebaseFirestore: sl(),preferenceRepo: sl()),);
   sl.registerLazySingleton<TransactionRepo>(() => TransactionRepoImpl(transactionRemoteDatasource: sl()));
   sl.registerLazySingleton<AddIncomeUseCase>(() => AddIncomeUseCase(transactionRepo: sl()),);
   sl.registerLazySingleton<AddExpenseUseCase>(() => AddExpenseUseCase(transactionRepo: sl()),);
   sl.registerLazySingleton<GetTransactionBetweenDateUseCase>(() => GetTransactionBetweenDateUseCase(transactionRepo: sl()),);
+  sl.registerLazySingleton<GetTransactionFilterUseCase>(() => GetTransactionFilterUseCase(transactionRepo: sl()),);
 
 
 

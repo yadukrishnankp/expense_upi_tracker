@@ -9,6 +9,7 @@ part 'transaction_entity.freezed.dart';
 sealed class TransactionEntity with _$TransactionEntity {
   const factory TransactionEntity({
     required String id,
+    required String userId,
     required String category,
     required String wallet,
     required String type,
@@ -34,6 +35,7 @@ sealed class TransactionEntity with _$TransactionEntity {
 
     return TransactionEntity(
       id: model.id,
+      userId: model.userId,
       category: model.category,
       wallet: model.wallet,
       type: model.type,

@@ -34,7 +34,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   DateTime selectedDateTime = DateTime.now();
   int dateTimeEpoch = DateTime.now().millisecondsSinceEpoch;
 
-  final categoryList = ["Food","Groceries","Entertainment","Utility Bills","Shopping","Rent","Fuel"];
+  final categoryList = ["Food","Groceries","Entertainment","Utility Bills","Shopping","Rent","Fuel","Others"];
   final paymentTypeList = ["Bank","Upi","Cash"];
 
   @override

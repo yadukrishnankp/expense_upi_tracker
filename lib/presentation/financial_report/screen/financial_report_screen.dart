@@ -46,9 +46,9 @@ class _FinancialReportScreenState extends State<FinancialReportScreen> {
                 ),
               ),
             ),
-            Container(
-                height: 300,
-                child: buildChart()),
+            // Container(
+            //     height: 300,
+            //     child: buildChart()),
             TwoSegmentWidget(
               leftTitle: 'Scheduled Ride',
               rightTitle: 'Ride History',
@@ -140,7 +140,7 @@ class _FinancialReportScreenState extends State<FinancialReportScreen> {
     );
   }
 
-  Widget buildChart() {
-    return LineChartSample1(); // ✅ Correct
-  }
+  // Widget buildChart() {
+  //   return LineChartSample1();
+  // }
 }

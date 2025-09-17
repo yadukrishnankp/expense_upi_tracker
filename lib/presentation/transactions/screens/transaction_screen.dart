@@ -1,9 +1,20 @@
+import 'package:e_tracker_upi/core/network/state/firestore_fetch_state.dart';
 import 'package:e_tracker_upi/core/router/app_router.dart';
 import 'package:e_tracker_upi/core/style/style_extension.dart';
 import 'package:e_tracker_upi/core/theme/app_colors.dart';
+import 'package:e_tracker_upi/core/utils/app_date_time_utils.dart';
+import 'package:e_tracker_upi/presentation/transactions/bloc/transaction_bloc.dart';
+import 'package:e_tracker_upi/presentation/transactions/event/transaction_event.dart';
+import 'package:e_tracker_upi/presentation/transactions/state/transaction_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../core/injection_container.dart';
+import '../../../domain/entity/transaction/transaction_entity.dart';
+import '../../home/widgets/transaction_list_tile.dart';
 import '../widgets/transaction_filter_bottom_sheet.dart';
 
 class TransactionScreen extends StatefulWidget {
@@ -15,17 +26,36 @@ class TransactionScreen extends StatefulWidget {
 
 class _TransactionScreenState extends State<TransactionScreen> {
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    context.read<TransactionBloc>().add(TransactionEvent.onDateChange(DateTime.now()));
+    super.initState();
+  }
+
 
   void _filterBottomSheet(BuildContext context) {
+    final transactionBloc = sl.get<TransactionBloc>();
     showModalBottomSheet(
       context: context,
       isDismissible: true,
       enableDrag: true,
       useRootNavigator: true,
-      // isScrollControlled: true,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent, // to allow rounded corners
-      builder: (_) => TransactionFilterBottomSheet(),
+      builder: (bContext) => BlocProvider.value(value: transactionBloc,child: TransactionFilterBottomSheet(),)
     );
+  }
+
+  _pickMonth(){
+    showMonthPicker(
+      context: context,
+      initialDate: DateTime.now(),
+    ).then((date) {
+      if (date != null) {
+        context.read<TransactionBloc>().add(TransactionEvent.onDateChange(date));
+      }
+    });
   }
 
   @override
@@ -37,18 +67,23 @@ class _TransactionScreenState extends State<TransactionScreen> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0,
           automaticallyImplyLeading: false,
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.keyboard_arrow_down, color: Theme.of(context).colorScheme.onSurface),
-              Text(
-                "Month",
-                style: context.appInterTextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
-              ),
-            ],
+          title: GestureDetector(
+            onTap: () {
+            _pickMonth();
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.keyboard_arrow_down, color: Theme.of(context).colorScheme.onSurface),
+               BlocBuilder<TransactionBloc,TransactionState>(builder: (context, state) =>  Text(
+                 AppDateTimeUtils.getShortMonthYear(state.selectedDate),
+                 style: context.appInterTextStyle(
+                   fontWeight: FontWeight.w500,
+                   fontSize: 14,
+                 ),
+               ),),
+              ],
+            ),
           ),
           centerTitle: false,
           actions: [
@@ -95,81 +130,49 @@ class _TransactionScreenState extends State<TransactionScreen> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Color(0xffFCFCFC),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: ListTile(
-                      leading: Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: appColorLightYellow,
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Icon(
-                          index % 2 == 0
-                              ? Icons.shopping_cart_rounded
-                              : Icons.subscriptions_rounded,
-                          color: appColorYellow,
-                          size: 24,
-                        ),
-                      ),
-                      title: Text(
-                        index % 2 == 0 ? "Grocery" : "Subscription",
-                        style: context.appInterTextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      subtitle: Text(
-                        index % 2 == 0
-                            ? "Bought vegetables and fruits"
-                            : "Monthly streaming service",
-                        style: context.appInterTextStyle(
-                          fontSize: 13,
-                          color: appSecondaryColor,
-                        ),
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            index % 3 == 0
-                                ? '+₹${(index + 1) * 100}'
-                                : '-₹${(index + 1) * 100}',
-                            style: context.appInterTextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: index % 3 == 0 ? appColorGreen : appColorRed,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Oct ${10 + index}',
-                            style: context.appInterTextStyle(
-                              fontSize: 12,
-                              color: appSecondaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+            child: BlocBuilder<TransactionBloc,TransactionState>(builder: (context, state) {
+              final fakeList = List.filled(5, TransactionEntity(
+                id: "",
+                userId: "",
+                category: "Shopping",
+                wallet: "",
+                dateTime: DateTime.now()    ,
+                createdDate: "", type: '',
+                createdTime: DateTime.now(),
+                amount: 1239,
+                formattedDate: '',
+                formattedTime: '',
+                createdTimeFormatted: '',
+              ));
+              return  state.transactionList.when(initial: () {
+                return  _transactionList(fakeList, true);
+              }, loading: () {
+                return  _transactionList(fakeList, true);
+              }, success: (data) {
+                return  _transactionList(data, false);
+              }, failure: (message) {
+                return Container(child:  Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Center(child: Text(message,style: context.appInterTextStyle(),)),
+                ));
+              },);
+            },),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _transactionList(List<TransactionEntity> list,bool loading){
+    return      Skeletonizer(
+      enabled: loading,
+      child: Expanded(
+        child: ListView.builder(
+          itemCount: list.length,
+          itemBuilder: (context, index) {
+            return  TransactionListTile(entity: list[index]);
+          },
+        ),
       ),
     );
   }

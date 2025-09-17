@@ -2,6 +2,7 @@
 
 import 'package:e_tracker_upi/core/utils/id_generator.dart';
 import 'package:e_tracker_upi/data/model/transaction/transaction_model.dart';
+import 'package:e_tracker_upi/domain/repo/preference_repo.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/add_expense_usecase.dart';
 import 'package:e_tracker_upi/presentation/expense/event/add_expense_event.dart';
 import 'package:e_tracker_upi/presentation/expense/state/add_expense_state.dart';
@@ -9,7 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddExpenseBloc extends Bloc<AddExpenseEvent,AddExpenseState>{
   final AddExpenseUseCase addExpenseUseCase;
-  AddExpenseBloc({required this.addExpenseUseCase}) : super (AddExpenseInitialState(addExpenseData: AddExpenseData(amount: 0, dateTime: DateTime.now(), wallet: "Bank", category: "Food"))){
+  final PreferenceRepo preferenceRepo;
+  AddExpenseBloc({required this.preferenceRepo, required this.addExpenseUseCase}) : super (AddExpenseInitialState(addExpenseData: AddExpenseData(amount: 0, dateTime: DateTime.now(), wallet: "Bank", category: "Food"))){
     on<ExpenseAddEvent>(_addExpense);
     on<AddExpenseAmountChangeEvent>(_onAmountChanged);
     on<AddExpenseCategoryChangeEvent>(_onCategoryChanged);
@@ -21,7 +23,9 @@ class AddExpenseBloc extends Bloc<AddExpenseEvent,AddExpenseState>{
   _addExpense(ExpenseAddEvent event,Emitter<AddExpenseState> emit)async{
     emit(AddExpenseLoadingState(addExpenseData: state.addExpenseData));
     final id  = IdGenerator.generateExpenseId();
+    final userId =await  preferenceRepo.getUserId();
     final result = await addExpenseUseCase.call(TransactionModel(
+      userId: userId??"",
         id: id, category: state.addExpenseData.category,
         wallet: state.addExpenseData.wallet, type: "Expense",
         dateTime: state.addExpenseData.dateTime,
