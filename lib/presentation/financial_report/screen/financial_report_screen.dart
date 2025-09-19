@@ -1,7 +1,18 @@
+import 'package:e_tracker_upi/core/network/state/firestore_fetch_state.dart';
 import 'package:e_tracker_upi/core/style/style_extension.dart';
+import 'package:e_tracker_upi/core/utils/app_date_time_utils.dart';
+import 'package:e_tracker_upi/presentation/financial_report/bloc/financial_report_bloc.dart';
+import 'package:e_tracker_upi/presentation/financial_report/event/financial_report_event.dart';
+import 'package:e_tracker_upi/presentation/financial_report/state/financial_report_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../domain/entity/transaction/transaction_entity.dart';
 import '../../home/widgets/income_expense_chart.dart';
+import '../../home/widgets/transaction_list_tile.dart';
+import '../widgets/expense_pi_chart.dart';
 import '../widgets/two_segment_widget.dart';
 
 class FinancialReportScreen extends StatefulWidget {
@@ -12,7 +23,29 @@ class FinancialReportScreen extends StatefulWidget {
 }
 
 class _FinancialReportScreenState extends State<FinancialReportScreen> {
-  Segment selectedSegment = Segment.left;
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    context.read<FinancialReportBloc>().add(DateChangeEvent(DateTime.now()));
+
+    super.initState();
+  }
+
+
+
+  _pickMonth(){
+    showMonthPicker(
+      context: context,
+      initialDate: DateTime.now(),
+    ).then((date) {
+      if (date != null) {
+        context.read<FinancialReportBloc>().add(DateChangeEvent(date));
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,116 +64,90 @@ class _FinancialReportScreenState extends State<FinancialReportScreen> {
               vertical: 5),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.keyboard_arrow_down, color: Theme.of(context).colorScheme.onSurface),
-                    Text(
-                      "Month",
-                      style: context.appInterTextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
+                child: GestureDetector(
+                  onTap: () {
+                    _pickMonth();
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.keyboard_arrow_down, color: Theme.of(context).colorScheme.onSurface),
+                      BlocBuilder<FinancialReportBloc,FinancialReportState>(builder: (context, state) => Text(
+                       AppDateTimeUtils.getShortMonthYear( state.selectedDate),
+                        style: context.appInterTextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                      ),),
+                    ],
+                  ),
                 ),
               ),
             ),
-            // Container(
-            //     height: 300,
-            //     child: buildChart()),
-            TwoSegmentWidget(
-              leftTitle: 'Scheduled Ride',
-              rightTitle: 'Ride History',
-              segment: selectedSegment,
+            BlocBuilder<FinancialReportBloc,FinancialReportState>(builder: (context, state) {
+             if(state.reportList.length!=0){
+              return Container(
+                   height: 250,
+                   child: buildChart(state.reportList));
+             }
+             return Container();
+            },),
+            BlocBuilder<FinancialReportBloc,FinancialReportState>(builder: (context, state) => TwoSegmentWidget(
+              leftTitle: 'Expense',
+              rightTitle: 'Income',
+              segment: state.segment,
               onChange: (Segment segment) {
-                setState(() {
-                  selectedSegment = segment;
-                });
+               context.read<FinancialReportBloc>().add(FinancialReportEvent.onSegmentChange(segment));
               },
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Color(0xffFCFCFC),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    child: ListTile(
-                      leading: Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: Colors.amber.shade50,
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Icon(
-                          index % 2 == 0
-                              ? Icons.shopping_cart_rounded
-                              : Icons.subscriptions_rounded,
-                          color: Colors.amber,
-                          size: 24,
-                        ),
-                      ),
-                      title: Text(
-                        index % 2 == 0 ? "Grocery" : "Subscription",
-                        style: context.appInterTextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      subtitle: Text(
-                        index % 2 == 0
-                            ? "Bought vegetables and fruits"
-                            : "Monthly streaming service",
-                        style: context.appInterTextStyle(
-                          fontSize: 13,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            index % 3 == 0
-                                ? '+₹${(index + 1) * 100}'
-                                : '-₹${(index + 1) * 100}',
-                            style: context.appInterTextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: index % 3 == 0 ? Colors.green : Colors.red,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Oct ${10 + index}',
-                            style: context.appInterTextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+            ),),
+            BlocBuilder<FinancialReportBloc,FinancialReportState>(builder: (context, state) {
+              final fakeList = List.filled(5, TransactionEntity(
+                id: "",
+                userId: "",
+                category: "Shopping",
+                wallet: "",
+                dateTime: DateTime.now()    ,
+                createdDate: "", type: '',
+                createdTime: DateTime.now(),
+                amount: 1239,
+                formattedDate: '',
+                formattedTime: '',
+                createdTimeFormatted: '',
+              ));
+              return  state.transactionList.when(initial: () {
+                return  _transactionList(fakeList, true);
+              }, loading: () {
+                return  _transactionList(fakeList, true);
+              }, success: (data) {
+                return  _transactionList(data, false);
+              }, failure: (message) {
+                return Container(child:  Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Center(child: Text(message,style: context.appInterTextStyle(),)),
+                ));
+              },);
+            },),
           ],
         ),
       ),
     );
   }
 
-  // Widget buildChart() {
-  //   return LineChartSample1();
-  // }
+  Widget _transactionList(List<TransactionEntity> list,bool loading){
+    return      Skeletonizer(
+      enabled: loading,
+      child: ListView.builder(
+        itemCount: list.length,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          return  TransactionListTile(entity: list[index]);
+        },
+      ),
+    );
+  }
+
+  Widget buildChart(List<ReportPieItem> list) {
+    return PieChartSample2(pieList: list,);
+  }
 }

@@ -148,7 +148,7 @@ class _TwoSegmentWidgetState extends State<TwoSegmentWidget> with SingleTickerPr
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.bookmark_border,color: _rightTintColorAnimation.value,),
+                                  // Icon(Icons.bookmark_border,color: _rightTintColorAnimation.value,),
                                   SizedBox(width: 2,),
                                   Text(widget.rightTitle,
                                     style: context.appInterTextStyle(

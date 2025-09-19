@@ -1,5 +1,6 @@
 import 'package:e_tracker_upi/presentation/auth/screens/signup_screen.dart';
 import 'package:e_tracker_upi/presentation/expense/bloc/AddExpenseBloc.dart';
+import 'package:e_tracker_upi/presentation/financial_report/bloc/financial_report_bloc.dart';
 import 'package:e_tracker_upi/presentation/financial_report/screen/financial_report_screen.dart';
 import 'package:e_tracker_upi/presentation/home/bloc/home_bloc.dart';
 import 'package:e_tracker_upi/presentation/home/screens/app_home.dart';
@@ -94,7 +95,8 @@ final GoRouter routerConfig = GoRouter(
     GoRoute(path: AppRoute.financial_report.path,
       name: AppRoute.financial_report.name,
       builder: (BuildContext context, GoRouterState state) {
-        return const FinancialReportScreen();
+        return BlocProvider<FinancialReportBloc>(create: (context) => FinancialReportBloc(getTransactionByTypeUseCase: sl()),
+        child: FinancialReportScreen(),);
       },
     ),
     GoRoute(path: AppRoute.add_note.path,

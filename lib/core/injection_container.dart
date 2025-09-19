@@ -15,6 +15,7 @@ import 'package:e_tracker_upi/domain/usecase/auth/signup_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/add_expense_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/add_income_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/get_transaction_between_date_usecase.dart';
+import 'package:e_tracker_upi/domain/usecase/transaction/get_transaction_by_type_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/get_transaction_filter_usecase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
@@ -57,6 +58,7 @@ Future<void> init() async {
   sl.registerLazySingleton<AddExpenseUseCase>(() => AddExpenseUseCase(transactionRepo: sl()),);
   sl.registerLazySingleton<GetTransactionBetweenDateUseCase>(() => GetTransactionBetweenDateUseCase(transactionRepo: sl()),);
   sl.registerLazySingleton<GetTransactionFilterUseCase>(() => GetTransactionFilterUseCase(transactionRepo: sl()),);
+  sl.registerLazySingleton<GetTransactionByTypeUseCase>(() => GetTransactionByTypeUseCase(transactionRepo: sl()),);
 
 
 

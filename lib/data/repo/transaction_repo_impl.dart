@@ -54,4 +54,21 @@ class TransactionRepoImpl extends TransactionRepo {
       },
     );
   }
+
+  @override
+  Future<Either<String, List<TransactionModel>>> getTransactionByType(AppDateModel model, String type) async{
+    final result = await transactionRemoteDatasource.getTransactionByType(model, type);
+    return result.fold(
+          (l) {
+        return Left(l);
+      },
+          (r) {
+        List<TransactionModel> list  = r.docs.map((e) {
+          return   TransactionModel.fromJson(e.data());
+        }).cast<TransactionModel>().toList();
+        print("getTransactionFilter size  ${list.length}");
+        return Right(list);
+      },
+    );
+  }
 }
