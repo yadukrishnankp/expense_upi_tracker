@@ -7,6 +7,7 @@ import 'package:e_tracker_upi/presentation/transactions/state/transaction_state.
 import 'package:e_tracker_upi/presentation/transactions/widgets/filter_chip_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class TransactionFilterBottomSheet extends StatefulWidget {
   const TransactionFilterBottomSheet({super.key});
@@ -23,9 +24,9 @@ class _TransactionFilterBottomSheetState extends State<TransactionFilterBottomSh
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.6,
+      initialChildSize: 0.7,
       maxChildSize: 0.8,
-      minChildSize: 0.5,
+      minChildSize: 0.7,
       builder: (context, scrollController) {
         return Container(
           decoration: BoxDecoration(
@@ -134,27 +135,6 @@ class _TransactionFilterBottomSheetState extends State<TransactionFilterBottomSh
                         ),),
                         const SizedBox(height: 24),
                         Text(
-                          "Filter by Wallet",
-                          style: context.appInterTextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        BlocBuilder<TransactionBloc,TransactionState>(builder: (context, state) => Wrap(
-                          spacing: 8,
-                          runSpacing: 8,
-                          children: List.generate(state.filterWalletList.length, (index) {
-                            return GestureDetector(
-                              onTap: () {
-                                context.read<TransactionBloc>().add(TransactionEvent.onFilterWalletChangeEvent(state.filterWalletList[index].name));
-                              },
-                              child: FilterChipItem(filterItem: state.filterWalletList[index]),
-                            );
-                          },),
-                        ),),
-                        const SizedBox(height: 24),
-                        Text(
                           "Sort by",
                           style: context.appInterTextStyle(
                             fontWeight: FontWeight.w600,
@@ -185,6 +165,8 @@ class _TransactionFilterBottomSheetState extends State<TransactionFilterBottomSh
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
+                      context.read<TransactionBloc>().add(TransactionEvent.onGetTransaction());
+                      context.pop();
                       // Apply filters action
                     },
                     style: context.appPrimaryButtonStyle(),

@@ -166,13 +166,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
   Widget _transactionList(List<TransactionEntity> list,bool loading){
     return      Skeletonizer(
       enabled: loading,
-      child: Expanded(
-        child: ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (context, index) {
-            return  TransactionListTile(entity: list[index]);
-          },
-        ),
+      child: ListView.builder(
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          return  TransactionListTile(entity: list[index]);
+        },
       ),
     );
   }

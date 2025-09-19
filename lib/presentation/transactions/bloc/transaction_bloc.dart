@@ -26,9 +26,27 @@ class TransactionBloc extends Bloc<TransactionEvent,TransactionState>{
 
   _getTransaction(GetTransactionEvent event,Emitter<TransactionState> emit)async{
     emit(state.copyWith(transactionList: FirestoreFetchState.loading()));
+    List<String> typeList = [];
+    List<String> cateGoryList = [];
+    List<String> walletList =[];
+    state.filterCategoryList.forEach((element) {
+      if(element.selected == true){
+        cateGoryList.add(element.name);
+      }
+    },);
+    state.filterTypeList.forEach((element) {
+      if(element.selected == true){
+        typeList.add(element.name);
+      }
+    },);
+    state.filterWalletList.forEach((element) {
+      if(element.selected == true){
+        walletList.add(element.name);
+      }
+    },);
     final dateModel = AppDateTimeUtils.getMonthStartAndEnd(state.selectedDate);
     final result = await getTransactionFilterUseCase.call(
-      TransactionFilterModel(dateModel: dateModel)
+      TransactionFilterModel(dateModel: dateModel,filterTypeList:typeList,filterCategoryList: cateGoryList,filterWalletList: walletList)
     );
     result.fold(
           (l) {
@@ -63,11 +81,16 @@ class TransactionBloc extends Bloc<TransactionEvent,TransactionState>{
   _onFilterTypeChangeEvent(FilterTypeChangeEvent event,Emitter<TransactionState>emit){
     emit(state.copyWith(
       filterTypeList: state.filterTypeList.map((e) {
-        if(e.name == event.name){
-          return e.copyWith(selected: ! e.selected);
+        if(e.selected== true){
+          return e.copyWith(selected: false);
         }
-        else {
-          return e;
+        else{
+          if(e.name == event.name){
+            return e.copyWith(selected:  true);
+          }
+          else {
+            return e.copyWith(selected:false );
+          }
         }
       },).toList()
     ));
@@ -87,7 +110,6 @@ class TransactionBloc extends Bloc<TransactionEvent,TransactionState>{
   }
 
   _onFilterCategoryChangeEvent(FilterCategoryChangeEvent event,Emitter<TransactionState>emit){
-
     emit(state.copyWith(
       filterCategoryList: state.filterCategoryList.map((e) {
         if(e.name == event.name){
@@ -101,7 +123,6 @@ class TransactionBloc extends Bloc<TransactionEvent,TransactionState>{
   }
 
   _onSortByDateChangeEvent(SortByDateChangeEvent event,Emitter<TransactionState>emit){
-
     emit(state.copyWith(
       sortByDateList: state.sortByDateList.map((e) {
         if(e.name == event.name){
