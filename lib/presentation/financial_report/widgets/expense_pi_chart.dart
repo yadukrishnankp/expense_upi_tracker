@@ -74,13 +74,11 @@ class PieChart2State extends State<PieChartSample2> {
             child: Container(
              child:    Align(
                alignment: Alignment.bottomCenter,
-               child: Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: widget.pieList.length,
-                      itemBuilder: (context, index) => Indicator(color: colorList[index], text: widget.pieList[index].name, isSquare: true),),
-                  ),
+               child: ListView.builder(
+                 shrinkWrap: true,
+                 physics: NeverScrollableScrollPhysics(),
+                 itemCount: widget.pieList.length,
+                 itemBuilder: (context, index) => Indicator(color: colorList[index], text: widget.pieList[index].name, isSquare: true),),
              )
             ),
           ),

@@ -1,17 +1,22 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_tracker_upi/data/datasources/auth_remote_datasource.dart';
+import 'package:e_tracker_upi/data/datasources/note_remote_datasource.dart';
 import 'package:e_tracker_upi/data/datasources/transaction_remote_datasource.dart';
 import 'package:e_tracker_upi/data/repo/auth_repo_impl.dart';
+import 'package:e_tracker_upi/data/repo/note_repo_impl.dart';
 import 'package:e_tracker_upi/data/repo/preference_repo_impl.dart';
 import 'package:e_tracker_upi/data/repo/transaction_repo_impl.dart';
 import 'package:e_tracker_upi/domain/repo/auth_repo.dart';
+import 'package:e_tracker_upi/domain/repo/note_repo.dart';
 import 'package:e_tracker_upi/domain/repo/preference_repo.dart';
 import 'package:e_tracker_upi/domain/repo/transaction_repo.dart';
 import 'package:e_tracker_upi/domain/usecase/auth/create_user_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/auth/get_user_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/auth/signin_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/auth/signup_usecase.dart';
+import 'package:e_tracker_upi/domain/usecase/notes/add_note_usecase.dart';
+import 'package:e_tracker_upi/domain/usecase/notes/get_note_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/add_expense_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/add_income_usecase.dart';
 import 'package:e_tracker_upi/domain/usecase/transaction/get_transaction_between_date_usecase.dart';
@@ -59,6 +64,12 @@ Future<void> init() async {
   sl.registerLazySingleton<GetTransactionBetweenDateUseCase>(() => GetTransactionBetweenDateUseCase(transactionRepo: sl()),);
   sl.registerLazySingleton<GetTransactionFilterUseCase>(() => GetTransactionFilterUseCase(transactionRepo: sl()),);
   sl.registerLazySingleton<GetTransactionByTypeUseCase>(() => GetTransactionByTypeUseCase(transactionRepo: sl()),);
+
+  //note
+  sl.registerLazySingleton<NoteRemoteDatasource>(() => NoteRemoteDataSourceImpl(preferenceRepo: sl(), firebaseFirestore: sl()),);
+  sl.registerLazySingleton<NoteRepo>(() => NoteRepoImpl(noteRemoteDatasource: sl()),);
+  sl.registerLazySingleton<AddNoteUseCase>(() => AddNoteUseCase(noteRepo: sl()),);
+  sl.registerLazySingleton<GetNoteUseCase>(() => GetNoteUseCase(noteRepo: sl()),);
 
 
 

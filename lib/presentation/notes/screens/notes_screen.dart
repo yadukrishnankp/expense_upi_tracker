@@ -1,7 +1,15 @@
+import 'package:e_tracker_upi/core/network/state/firestore_fetch_state.dart';
 import 'package:e_tracker_upi/core/style/style_extension.dart';
 import 'package:e_tracker_upi/core/theme/app_colors.dart';
+import 'package:e_tracker_upi/domain/entity/note/note_entity.dart';
+import 'package:e_tracker_upi/presentation/notes/bloc/note_bloc.dart';
+import 'package:e_tracker_upi/presentation/notes/event/note_event.dart';
+import 'package:e_tracker_upi/presentation/notes/state/note_state.dart';
+import 'package:e_tracker_upi/presentation/notes/widgets/note_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../core/router/app_router.dart';
 import '../widgets/note_view_bottom_sheet.dart';
@@ -33,6 +41,14 @@ class _NotesScreenState extends State<NotesScreen> {
     );
   }
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    context.read<NoteBloc>().add(NoteEvent.getNote());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,104 +71,35 @@ class _NotesScreenState extends State<NotesScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: 10,
-        padding: const EdgeInsets.symmetric(vertical: 12),
+      body: BlocBuilder<NoteBloc,NoteState>(builder: (context, state) {
+        final fakeList = List.filled(5, NoteEntity(
+          userId: "",
+          id: "",
+          title: "Hey",
+          description: "hello eliot",
+          priority: "High",
+          isRemind: true, createdTime: DateTime.now(), date: '', time: ''
+        ));
+        return  state.noteList.when(initial: () {
+         return  _noteList(fakeList, true);
+         }, loading: () =>_noteList(fakeList, true) , success: (data) {
+          return  _noteList(data, false);
+         }, failure: (message) {
+          return Container(child:  Center(child: Text(message,style: context.appInterTextStyle(),)));
+         },);
+        },
+      ),
+    );
+
+
+  }
+  Widget _noteList(List<NoteEntity> list,bool loading){
+    return      Skeletonizer(
+      enabled: loading,
+      child: ListView.builder(
+        itemCount: list.length,
         itemBuilder: (context, index) {
-          final isEnabled = index % 2 == 0;
-          // Example priority assignment for demo
-          final priorities = ['High', 'Medium', 'Low'];
-          final priority = priorities[index % 3];
-          Color priorityColor;
-          IconData priorityIcon;
-          switch (priority) {
-            case 'High':
-              priorityColor = Colors.red;
-              priorityIcon = Icons.priority_high;
-              break;
-            case 'Medium':
-              priorityColor = Colors.orange;
-              priorityIcon = Icons.report_problem;
-              break;
-            default:
-              priorityColor = Colors.green;
-              priorityIcon = Icons.low_priority;
-          }
-          // Example notification date
-          final notificationDate = "2024-07-01 10:0${index} AM";
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-            child: GestureDetector(
-              onTap: () {
-                _viewNoteBottomSheet(context);
-              },
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Color(0xffFCFCFC),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: ListTile(
-                  leading: Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: isEnabled ? appPrimaryColorLight : appSecondaryColor.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      Icons.notifications_active_rounded,
-                      color: isEnabled ? appPrimaryColor : appSecondaryColor,
-                      size: 24,
-                    ),
-                  ),
-                  title: Text(
-                    "Note Title ${index + 1}",
-                    style: context.appInterTextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "This is a subtitle for note ${index + 1}",
-                    style: context.appInterTextStyle(
-                      fontSize: 13,
-                      color: appSecondaryColor,
-                    ),
-                  ),
-                  trailing: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        "12:0${index} PM",
-                        style: context.appInterTextStyle(
-                          fontSize: 13,
-                          color: appSecondaryColor,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(priorityIcon, color: priorityColor, size: 18),
-                          const SizedBox(width: 4),
-                          Text(
-                            priority,
-                            style: context.appInterTextStyle(
-                              fontSize: 12,
-                              color: priorityColor,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
+          return  NoteItem(noteEntity: list[index]);
         },
       ),
     );

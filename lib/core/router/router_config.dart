@@ -7,6 +7,8 @@ import 'package:e_tracker_upi/presentation/home/screens/app_home.dart';
 import 'package:e_tracker_upi/presentation/home/screens/home_screen.dart';
 import 'package:e_tracker_upi/presentation/income/bloc/add_income_bloc.dart';
 import 'package:e_tracker_upi/presentation/income/screens/add_income_screen.dart';
+import 'package:e_tracker_upi/presentation/notes/bloc/add_note_bloc.dart';
+import 'package:e_tracker_upi/presentation/notes/bloc/note_bloc.dart';
 import 'package:e_tracker_upi/presentation/notes/screens/add_note_screen.dart';
 import 'package:e_tracker_upi/presentation/notes/screens/notes_screen.dart';
 import 'package:e_tracker_upi/presentation/profile/screen/profile_screen.dart';
@@ -67,7 +69,8 @@ final GoRouter routerConfig = GoRouter(
           path: AppRoute.notes.path,
           name: AppRoute.notes.name,
           builder: (context, state) {
-            return const NotesScreen();
+            return BlocProvider(create: (context) => NoteBloc(getNoteUseCase: sl()),
+            child: NotesScreen(),);
           },
         ),
         GoRoute(
@@ -102,7 +105,8 @@ final GoRouter routerConfig = GoRouter(
     GoRoute(path: AppRoute.add_note.path,
       name: AppRoute.add_note.name,
       builder: (BuildContext context, GoRouterState state) {
-        return const AddNoteScreen();
+        return BlocProvider(create: (context) => AddNoteBloc(addNoteUseCase: sl(), preferenceRepo: sl()),
+        child: AddNoteScreen(),);
       },
     ),
     GoRoute(

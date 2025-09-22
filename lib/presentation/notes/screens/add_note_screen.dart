@@ -1,6 +1,14 @@
 import 'package:e_tracker_upi/core/style/style_extension.dart';
 import 'package:e_tracker_upi/core/theme/app_colors.dart';
+import 'package:e_tracker_upi/core/utils/app_date_time_utils.dart';
+import 'package:e_tracker_upi/presentation/notes/bloc/add_note_bloc.dart';
+import 'package:e_tracker_upi/presentation/notes/event/add_note_event.dart';
+import 'package:e_tracker_upi/presentation/notes/state/add_note_state.dart';
+import 'package:e_tracker_upi/shared/widget/app_toast.dart';
+import 'package:e_tracker_upi/shared/widget/loading_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class AddNoteScreen extends StatefulWidget {
   const AddNoteScreen({super.key});
@@ -12,9 +20,16 @@ class AddNoteScreen extends StatefulWidget {
 class _AddNoteScreenState extends State<AddNoteScreen> {
   final _titleController = TextEditingController();
   final _descController = TextEditingController();
-  String _priority = 'High';
-  bool _reminder = false;
+  final _dateController = TextEditingController();
   DateTime? _reminderDateTime;
+  late AddNoteBloc addNoteBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    addNoteBloc = context.read<AddNoteBloc>();
+    super.initState();
+  }
 
   Future<void> _pickDateTime() async {
     final date = await showDatePicker(
@@ -31,7 +46,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
           : TimeOfDay.now(),
     );
     if (time == null) return;
-    setState(() {
       _reminderDateTime = DateTime(
         date.year,
         date.month,
@@ -39,12 +53,34 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         time.hour,
         time.minute,
       );
-    });
+      context.read<AddNoteBloc>().add(AddNoteEvent.onRemindDateChange(_reminderDateTime!));
+      _dateController.text = AppDateTimeUtils.formatFull(_reminderDateTime!);
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocListener<AddNoteBloc,AddNoteState>(listener: (context, state) {
+      if(state is AddNoteStateInitial){
+        LoadingDialog.close(context);
+      }
+      else if(state is AddNoteStateLoading){
+        LoadingDialog.show(context);
+      }
+      else if(state is AddNoteStateSuccess){
+        LoadingDialog.close(context);
+        if(state.message  != null){
+          AppToast.showErrorToast(state.message??"", context);
+        }
+        context.pop();
+      }
+      else if(state is AddNoteStateFailure){
+        LoadingDialog.close(context);
+        if(state.message.isNotEmpty){
+          AppToast.showErrorToast(state.message, context);
+        }
+      }
+    },child: Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.transparent,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -67,6 +103,11 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
             TextFormField(
               controller: _titleController,
               style: context.appInterTextStyle(),
+              onChanged: (value) {
+                if(value.isNotEmpty){
+                  context.read<AddNoteBloc>().add(AddNoteEvent.onTitleChange(value));
+                }
+              },
               decoration: InputDecoration(
                 hintText: "Enter note title",
                 border: context.appInputBorder(),
@@ -81,6 +122,11 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
             TextFormField(
               controller: _descController,
               style: context.appInterTextStyle(),
+              onChanged: (value) {
+                if(value.isNotEmpty){
+                  context.read<AddNoteBloc>().add(AddNoteEvent.onDescriptionChange(value));
+                }
+              },
               maxLines: 4,
               decoration: InputDecoration(
                 hintText: "Enter description",
@@ -105,46 +151,43 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
             const SizedBox(height: 18),
             Row(
               children: [
-                Checkbox(
-                  value: _reminder,
+                BlocBuilder<AddNoteBloc,AddNoteState>(builder: (context, state) =>  Checkbox(
+                  value: state.noteData.isRemind,
                   activeColor: appPrimaryColor,
                   onChanged: (val) {
-                    setState(() {
-                      _reminder = val ?? false;
-                      if (!_reminder) _reminderDateTime = null;
-                    });
+                    context.read<AddNoteBloc>().add(AddNoteEvent.onRemindToggle(val!));
                   },
-                ),
+                ),),
                 Text(
                   "Add Reminder",
                   style: context.appInterTextStyle(fontWeight: FontWeight.w500),
                 ),
               ],
             ),
-            if (_reminder) ...[
-              GestureDetector(
-                onTap: _pickDateTime,
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    style: context.appInterTextStyle(),
-                    decoration: InputDecoration(
-                      hintText: "Select date & time",
-                      border: context.appInputBorder(),
-                      enabledBorder: context.appInputBorder(),
-                      focusedBorder: context.appInputBorder(),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      suffixIcon: Icon(Icons.calendar_today, color: appPrimaryColor),
+            BlocBuilder<AddNoteBloc,AddNoteState>(builder: (context, state) {
+              if(state.noteData.isRemind== true){
+                return  GestureDetector(
+                  onTap: _pickDateTime,
+                  child: AbsorbPointer(
+                    child: TextFormField(
+                      style: context.appInterTextStyle(),
+                      onTap: _pickDateTime,
+                      decoration: InputDecoration(
+                        hintText: "Select date & time",
+                        border: context.appInputBorder(),
+                        enabledBorder: context.appInputBorder(),
+                        focusedBorder: context.appInputBorder(),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        suffixIcon: Icon(Icons.calendar_today, color: appPrimaryColor),
+                      ),
+                      controller: _dateController,
+                      enabled: false,
                     ),
-                    controller: TextEditingController(
-                      text: _reminderDateTime != null
-                          ? "${_reminderDateTime!.toLocal()}".split('.').first
-                          : "",
-                    ),
-                    enabled: false,
                   ),
-                ),
-              ),
-            ],
+                );
+              }
+              return SizedBox();
+            },),
             const SizedBox(height: 28),
             SizedBox(
               width: double.infinity,
@@ -157,7 +200,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 onPressed: () {
-                  // Submit note logic
+                  context.read<AddNoteBloc>().add(AddNoteEvent.onNoteAddEvent());
                 },
                 child: Text(
                   "Add Note",
@@ -172,20 +215,18 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
           ],
         ),
       ),
-    );
+    ),);
   }
 
   Widget _buildPriorityRadio(String value, Color color) {
-    return Row(
+    return BlocBuilder<AddNoteBloc,AddNoteState>(builder: (context, state) => Row(
       children: [
         Radio<String>(
           value: value,
-          groupValue: _priority,
+          groupValue: state.noteData.priority,
           activeColor: color,
           onChanged: (val) {
-            setState(() {
-              _priority = val!;
-            });
+            context.read<AddNoteBloc>().add(AddNoteEvent.onPriorityChange(val!));
           },
         ),
         Text(
@@ -196,6 +237,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
           ),
         ),
       ],
-    );
+    ),);
   }
 }
