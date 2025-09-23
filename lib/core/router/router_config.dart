@@ -45,12 +45,12 @@ final GoRouter routerConfig = GoRouter(
             BlocProvider<AppHomeBloc>(create: (context) => sl<AppHomeBloc>(),),
             BlocProvider<HomeBloc>(create: (context) => sl<HomeBloc>(),),
             BlocProvider<ProfileBloc>(create: (context) => sl<ProfileBloc>(),),
-            BlocProvider<TransactionBloc>(create: (context) => sl<TransactionBloc>(),)
+            BlocProvider<TransactionBloc>(create: (context) => sl<TransactionBloc>(),),
+            BlocProvider<NoteBloc>(create: (context) => sl<NoteBloc>(),)
           ],
             child: AppHome(child: child));
       },
       routes: [
-        // This screen is displayed on the ShellRoute's Navigator.
         GoRoute(
           path: AppRoute.home.path,
           name: AppRoute.home.name,
@@ -69,8 +69,7 @@ final GoRouter routerConfig = GoRouter(
           path: AppRoute.notes.path,
           name: AppRoute.notes.name,
           builder: (context, state) {
-            return BlocProvider(create: (context) => NoteBloc(getNoteUseCase: sl()),
-            child: NotesScreen(),);
+            return NotesScreen();
           },
         ),
         GoRoute(
@@ -80,7 +79,6 @@ final GoRouter routerConfig = GoRouter(
             return const ProfileScreen();
           },
         ),
-
       ],
     ),
     GoRoute(path: AppRoute.add_expense.path,

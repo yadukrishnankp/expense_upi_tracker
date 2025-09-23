@@ -4,6 +4,7 @@ import 'package:e_tracker_upi/domain/entity/note/note_entity.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
+import 'note_view_bottom_sheet.dart';
 
 class NoteItem extends StatelessWidget {
   final NoteEntity noteEntity;
@@ -16,7 +17,7 @@ class NoteItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
       child: GestureDetector(
         onTap: () {
-          // _viewNoteBottomSheet(context);
+          _viewNoteBottomSheet(context);
         },
         child: Container(
           padding: const EdgeInsets.all(8),
@@ -46,7 +47,7 @@ class NoteItem extends StatelessWidget {
               ),
             ),
             subtitle: Text(
-              noteEntity.description,
+              noteEntity.description??"",
               style: context.appInterTextStyle(
                 fontSize: 13,
                 color: appSecondaryColor,
@@ -83,6 +84,20 @@ class NoteItem extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _viewNoteBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isDismissible: true,
+      enableDrag: true,
+      useRootNavigator: true,
+      // isScrollControlled: true,
+      backgroundColor: Colors.transparent, // to allow rounded corners
+      builder: (_) => NoteViewBottomSheet(
+        noteEntity: noteEntity,
       ),
     );
   }

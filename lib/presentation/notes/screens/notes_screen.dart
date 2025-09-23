@@ -23,29 +23,14 @@ class NotesScreen extends StatefulWidget {
 
 class _NotesScreenState extends State<NotesScreen> {
 
-  void _viewNoteBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isDismissible: true,
-      enableDrag: true,
-      useRootNavigator: true,
-      // isScrollControlled: true,
-      backgroundColor: Colors.transparent, // to allow rounded corners
-      builder: (_) => NoteViewBottomSheet(
-        title: "Note Title",
-        description: "This is a detailed description of the note. It can contain more information about the note, including any relevant details or context that the user might need to know.",
-        priority: "High",
-        hasReminder: true,
-        reminderDateTime: "2024-07-01 10:00 AM",
-      ),
-    );
-  }
+
 
 
   @override
   void initState() {
     // TODO: implement initState
     context.read<NoteBloc>().add(NoteEvent.getNote());
+
     super.initState();
   }
 

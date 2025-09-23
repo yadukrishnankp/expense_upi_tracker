@@ -1,30 +1,21 @@
 import 'package:e_tracker_upi/core/style/style_extension.dart';
 import 'package:e_tracker_upi/core/theme/app_colors.dart';
+import 'package:e_tracker_upi/core/utils/app_date_time_utils.dart';
+import 'package:e_tracker_upi/domain/entity/note/note_entity.dart';
 import 'package:flutter/material.dart';
 
 class NoteViewBottomSheet extends StatelessWidget {
-  final String title;
-  final String description;
-  final String priority;
-  final bool hasReminder;
-  final String? reminderDateTime;
-  final String? createdDateTime;
+final NoteEntity noteEntity;
 
   const NoteViewBottomSheet({
-    super.key,
-    required this.title,
-    required this.description,
-    required this.priority,
-    this.hasReminder = false,
-    this.reminderDateTime,
-    this.createdDateTime,
+    super.key, required this.noteEntity,
   });
 
   @override
   Widget build(BuildContext context) {
     Color priorityColor;
     IconData priorityIcon;
-    switch (priority) {
+    switch (noteEntity.priority) {
       case 'High':
         priorityColor = Colors.red;
         priorityIcon = Icons.priority_high;
@@ -39,8 +30,6 @@ class NoteViewBottomSheet extends StatelessWidget {
     }
 
     // Provide a default value for createdDateTime if null
-    final String displayCreatedDateTime = createdDateTime ??
-        "${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2, '0')}-${DateTime.now().day.toString().padLeft(2, '0')} ${DateTime.now().hour.toString().padLeft(2, '0')}:${DateTime.now().minute.toString().padLeft(2, '0')}";
 
     return DraggableScrollableSheet(
       initialChildSize: 0.9,
@@ -87,13 +76,13 @@ class NoteViewBottomSheet extends StatelessWidget {
                         ),
                         const SizedBox(height: 24),
                         Text(
-                          title,
+                          noteEntity.title,
                           style: context.appInterTextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 20,
                           ),
                         ),
-                        if (hasReminder && reminderDateTime != null) ...[
+                        if (noteEntity.isRemind) ...[
                           const SizedBox(height: 16),
                           Container(
                             decoration: context.capsuleTextViewFilledShape(appPrimaryColorLight),
@@ -108,7 +97,7 @@ class NoteViewBottomSheet extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  reminderDateTime!,
+                                  noteEntity.rDate!,
                                   style: context.appInterTextStyle(
                                     color: appPrimaryColor,
                                     fontWeight: FontWeight.w500,
@@ -129,7 +118,7 @@ class NoteViewBottomSheet extends StatelessWidget {
                               Icon(priorityIcon, color: priorityColor, size: 18),
                               const SizedBox(width: 4),
                               Text(
-                                priority,
+                                noteEntity.priority,
                                 style: context.appInterTextStyle(
                                   color: priorityColor,
                                   fontWeight: FontWeight.w500,
@@ -141,7 +130,7 @@ class NoteViewBottomSheet extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          description,
+                          noteEntity.description??"",
                           style: context.appInterTextStyle(
                             fontSize: 15,
                             color: appSecondaryColor,
@@ -153,7 +142,7 @@ class NoteViewBottomSheet extends StatelessWidget {
                             Icon(Icons.calendar_today, size: 16, color: appSecondaryColor),
                             const SizedBox(width: 6),
                             Text(
-                              displayCreatedDateTime,
+                              AppDateTimeUtils.formatFull(noteEntity.createdTime),
                               style: context.appInterTextStyle(
                                 color: appSecondaryColor,
                                 fontSize: 13,

@@ -10,6 +10,8 @@ import 'package:e_tracker_upi/domain/repo/preference_repo.dart';
 abstract class NoteRemoteDatasource{
   Future<Either<String,String>>addNote(NoteModel model);
   Future<Either<String,QuerySnapshot<Map<String,dynamic>>>> getNotes();
+  Future<Either<String,String>> deleteNote(String id);
+  Future<Either<String,String>>updateNote(NoteModel model);
 }
 
 class NoteRemoteDataSourceImpl extends NoteRemoteDatasource{
@@ -44,6 +46,28 @@ class NoteRemoteDataSourceImpl extends NoteRemoteDatasource{
     catch(e){
       print(e.toString());
       return Left("Error adding data");
+    }
+  }
+
+  @override
+  Future<Either<String, String>> deleteNote(String id)async {
+    try{
+    await  firebaseFirestore.collection("notes").doc(id).delete();
+    return Right("Note Deleted Successfully");
+    }
+    catch(e){
+      return Left("Error while deleting note");
+    }
+  }
+
+  @override
+  Future<Either<String, String>> updateNote(NoteModel model ) async{
+    try{
+      await firebaseFirestore.collection("notes").doc(model.id).update(model.toJson());
+      return Right("Note Updated Successfully");
+    }
+    catch(e){
+      return Left("Error while updating  note");
     }
   }
 

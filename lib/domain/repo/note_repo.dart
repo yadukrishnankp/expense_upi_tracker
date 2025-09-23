@@ -7,4 +7,6 @@ abstract class NoteRepo{
 
   Future<Either<String,String>> addNote(NoteModel model);
   Future<Either<String,List<NoteModel>>>getNotes();
+  Future<Either<String,String>> deleteNote(String id);
+  Future<Either<String,String>> updateNote(NoteModel model);
 }

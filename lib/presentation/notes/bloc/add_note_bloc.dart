@@ -42,7 +42,7 @@ class AddNoteBloc extends Bloc<AddNoteEvent,AddNoteState>{
     final userId = await preferenceRepo.getUserId();
     final id = IdGenerator.generateNoteId();
     final result = await addNoteUseCase.call(NoteModel(userId: userId!, id: id, title: state.noteData.title,priority: state.noteData.priority,
-        description:state.noteData.description ?? "",isRemind: state.noteData.isRemind, createdTime: DateTime.now(),reminderTime: state.noteData.selectedDate!));
+        description:state.noteData.description ?? "",isRemind: state.noteData.isRemind, createdTime: DateTime.now(),reminderTime: state.noteData.selectedDate??DateTime.now()));
      result.fold((l) => emit(AddNoteState.Failure(noteData: state.noteData, message: l)),
          (r) => emit(AddNoteState.Success(noteData: state.noteData,message: r)),);
   }

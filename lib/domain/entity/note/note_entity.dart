@@ -11,7 +11,7 @@ sealed class NoteEntity with _$NoteEntity {
     required String id,
     required String title,
     required String priority,
-    @Default("") String description,
+    String? description,
     required bool isRemind,
     DateTime? reminderTime,
      required DateTime createdTime,
@@ -42,6 +42,7 @@ sealed class NoteEntity with _$NoteEntity {
         title: mode.title,
         priority: mode.priority,
         reminderTime: mode.reminderTime,
+        description: mode.description,
         rDate: formattedDate,
         rTime: formattedTime,
         isRemind: mode.isRemind, createdTime:

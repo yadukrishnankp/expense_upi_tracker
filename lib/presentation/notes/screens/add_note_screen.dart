@@ -2,13 +2,17 @@ import 'package:e_tracker_upi/core/style/style_extension.dart';
 import 'package:e_tracker_upi/core/theme/app_colors.dart';
 import 'package:e_tracker_upi/core/utils/app_date_time_utils.dart';
 import 'package:e_tracker_upi/presentation/notes/bloc/add_note_bloc.dart';
+import 'package:e_tracker_upi/presentation/notes/bloc/note_bloc.dart';
 import 'package:e_tracker_upi/presentation/notes/event/add_note_event.dart';
+import 'package:e_tracker_upi/presentation/notes/event/note_event.dart';
 import 'package:e_tracker_upi/presentation/notes/state/add_note_state.dart';
 import 'package:e_tracker_upi/shared/widget/app_toast.dart';
 import 'package:e_tracker_upi/shared/widget/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../core/injection_container.dart';
 
 class AddNoteScreen extends StatefulWidget {
   const AddNoteScreen({super.key});
@@ -23,11 +27,13 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   final _dateController = TextEditingController();
   DateTime? _reminderDateTime;
   late AddNoteBloc addNoteBloc;
+ late NoteBloc noteBloc;
 
   @override
   void initState() {
     // TODO: implement initState
     addNoteBloc = context.read<AddNoteBloc>();
+    noteBloc = sl.get<NoteBloc>();
     super.initState();
   }
 
@@ -72,6 +78,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         if(state.message  != null){
           AppToast.showErrorToast(state.message??"", context);
         }
+        noteBloc.add(NoteEvent.getNote());
         context.pop();
       }
       else if(state is AddNoteStateFailure){

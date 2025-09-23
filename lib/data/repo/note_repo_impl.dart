@@ -27,6 +27,18 @@ class NoteRepoImpl implements NoteRepo{
     },);
   }
 
+  @override
+  Future<Either<String, String>> deleteNote(String id) async{
+   final  result = await noteRemoteDatasource.deleteNote(id);
+   return result;
+  }
+
+  @override
+  Future<Either<String, String>> updateNote(NoteModel model )async {
+   final result = await noteRemoteDatasource.updateNote(model);
+   return result;
+  }
+
 
       
 }

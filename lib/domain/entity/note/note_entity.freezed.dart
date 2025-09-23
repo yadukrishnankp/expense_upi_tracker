@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$NoteEntity {
 
- String get userId; String get id; String get title; String get priority; String get description; bool get isRemind; DateTime? get reminderTime; DateTime get createdTime; String? get rDate; String? get rTime; String get date; String get time;
+ String get userId; String get id; String get title; String get priority; String? get description; bool get isRemind; DateTime? get reminderTime; DateTime get createdTime; String? get rDate; String? get rTime; String get date; String get time;
 /// Create a copy of NoteEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $NoteEntityCopyWith<$Res>  {
   factory $NoteEntityCopyWith(NoteEntity value, $Res Function(NoteEntity) _then) = _$NoteEntityCopyWithImpl;
 @useResult
 $Res call({
- String userId, String id, String title, String priority, String description, bool isRemind, DateTime? reminderTime, DateTime createdTime, String? rDate, String? rTime, String date, String time
+ String userId, String id, String title, String priority, String? description, bool isRemind, DateTime? reminderTime, DateTime createdTime, String? rDate, String? rTime, String date, String time
 });
 
 
@@ -62,14 +62,14 @@ class _$NoteEntityCopyWithImpl<$Res>
 
 /// Create a copy of NoteEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? id = null,Object? title = null,Object? priority = null,Object? description = null,Object? isRemind = null,Object? reminderTime = freezed,Object? createdTime = null,Object? rDate = freezed,Object? rTime = freezed,Object? date = null,Object? time = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? id = null,Object? title = null,Object? priority = null,Object? description = freezed,Object? isRemind = null,Object? reminderTime = freezed,Object? createdTime = null,Object? rDate = freezed,Object? rTime = freezed,Object? date = null,Object? time = null,}) {
   return _then(_self.copyWith(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,priority: null == priority ? _self.priority : priority // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,isRemind: null == isRemind ? _self.isRemind : isRemind // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,isRemind: null == isRemind ? _self.isRemind : isRemind // ignore: cast_nullable_to_non_nullable
 as bool,reminderTime: freezed == reminderTime ? _self.reminderTime : reminderTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,createdTime: null == createdTime ? _self.createdTime : createdTime // ignore: cast_nullable_to_non_nullable
 as DateTime,rDate: freezed == rDate ? _self.rDate : rDate // ignore: cast_nullable_to_non_nullable
@@ -158,7 +158,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  String id,  String title,  String priority,  String description,  bool isRemind,  DateTime? reminderTime,  DateTime createdTime,  String? rDate,  String? rTime,  String date,  String time)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String userId,  String id,  String title,  String priority,  String? description,  bool isRemind,  DateTime? reminderTime,  DateTime createdTime,  String? rDate,  String? rTime,  String date,  String time)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NoteEntity() when $default != null:
 return $default(_that.userId,_that.id,_that.title,_that.priority,_that.description,_that.isRemind,_that.reminderTime,_that.createdTime,_that.rDate,_that.rTime,_that.date,_that.time);case _:
@@ -179,7 +179,7 @@ return $default(_that.userId,_that.id,_that.title,_that.priority,_that.descripti
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  String id,  String title,  String priority,  String description,  bool isRemind,  DateTime? reminderTime,  DateTime createdTime,  String? rDate,  String? rTime,  String date,  String time)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String userId,  String id,  String title,  String priority,  String? description,  bool isRemind,  DateTime? reminderTime,  DateTime createdTime,  String? rDate,  String? rTime,  String date,  String time)  $default,) {final _that = this;
 switch (_that) {
 case _NoteEntity():
 return $default(_that.userId,_that.id,_that.title,_that.priority,_that.description,_that.isRemind,_that.reminderTime,_that.createdTime,_that.rDate,_that.rTime,_that.date,_that.time);}
@@ -196,7 +196,7 @@ return $default(_that.userId,_that.id,_that.title,_that.priority,_that.descripti
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  String id,  String title,  String priority,  String description,  bool isRemind,  DateTime? reminderTime,  DateTime createdTime,  String? rDate,  String? rTime,  String date,  String time)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String userId,  String id,  String title,  String priority,  String? description,  bool isRemind,  DateTime? reminderTime,  DateTime createdTime,  String? rDate,  String? rTime,  String date,  String time)?  $default,) {final _that = this;
 switch (_that) {
 case _NoteEntity() when $default != null:
 return $default(_that.userId,_that.id,_that.title,_that.priority,_that.description,_that.isRemind,_that.reminderTime,_that.createdTime,_that.rDate,_that.rTime,_that.date,_that.time);case _:
@@ -211,14 +211,14 @@ return $default(_that.userId,_that.id,_that.title,_that.priority,_that.descripti
 
 
 class _NoteEntity implements NoteEntity {
-  const _NoteEntity({required this.userId, required this.id, required this.title, required this.priority, this.description = "", required this.isRemind, this.reminderTime, required this.createdTime, this.rDate, this.rTime, required this.date, required this.time});
+  const _NoteEntity({required this.userId, required this.id, required this.title, required this.priority, this.description, required this.isRemind, this.reminderTime, required this.createdTime, this.rDate, this.rTime, required this.date, required this.time});
   
 
 @override final  String userId;
 @override final  String id;
 @override final  String title;
 @override final  String priority;
-@override@JsonKey() final  String description;
+@override final  String? description;
 @override final  bool isRemind;
 @override final  DateTime? reminderTime;
 @override final  DateTime createdTime;
@@ -257,7 +257,7 @@ abstract mixin class _$NoteEntityCopyWith<$Res> implements $NoteEntityCopyWith<$
   factory _$NoteEntityCopyWith(_NoteEntity value, $Res Function(_NoteEntity) _then) = __$NoteEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String userId, String id, String title, String priority, String description, bool isRemind, DateTime? reminderTime, DateTime createdTime, String? rDate, String? rTime, String date, String time
+ String userId, String id, String title, String priority, String? description, bool isRemind, DateTime? reminderTime, DateTime createdTime, String? rDate, String? rTime, String date, String time
 });
 
 
@@ -274,14 +274,14 @@ class __$NoteEntityCopyWithImpl<$Res>
 
 /// Create a copy of NoteEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? id = null,Object? title = null,Object? priority = null,Object? description = null,Object? isRemind = null,Object? reminderTime = freezed,Object? createdTime = null,Object? rDate = freezed,Object? rTime = freezed,Object? date = null,Object? time = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? id = null,Object? title = null,Object? priority = null,Object? description = freezed,Object? isRemind = null,Object? reminderTime = freezed,Object? createdTime = null,Object? rDate = freezed,Object? rTime = freezed,Object? date = null,Object? time = null,}) {
   return _then(_NoteEntity(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,priority: null == priority ? _self.priority : priority // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,isRemind: null == isRemind ? _self.isRemind : isRemind // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,isRemind: null == isRemind ? _self.isRemind : isRemind // ignore: cast_nullable_to_non_nullable
 as bool,reminderTime: freezed == reminderTime ? _self.reminderTime : reminderTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,createdTime: null == createdTime ? _self.createdTime : createdTime // ignore: cast_nullable_to_non_nullable
 as DateTime,rDate: freezed == rDate ? _self.rDate : rDate // ignore: cast_nullable_to_non_nullable
