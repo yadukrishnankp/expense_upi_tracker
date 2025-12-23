@@ -33,9 +33,13 @@ A Flutter-based mobile application to track daily income and expenses with a cle
 ## 📸 Screenshots
 
 <p float="left">
-  <img src="[WhatsApp Image 2025-12-23 at 5.02.39 PM (1).jpeg](https://github.com/yadukrishnankp/expense_upi_tracker/blob/master/assets/images/homeet.jpeg)" width="250" />
-  <img src="[WhatsApp Image 2025-12-23 at 5.02.39 PM (1).jpeg](https://github.com/yadukrishnankp/expense_upi_tracker/blob/master/assets/images/homeet.jpeg)" width="250" />
-  <img src="[WhatsApp Image 2025-12-23 at 5.02.39 PM (1).jpeg](https://github.com/yadukrishnankp/expense_upi_tracker/blob/master/assets/images/homeet.jpeg)" width="250" />
+<img src="https://raw.githubusercontent.com/yadukrishnankp/expense_upi_tracker/master/assets/images/homeet.jpeg" width="250" />
+<img src="https://github.com/yadukrishnankp/expense_upi_tracker/blob/master/assets/images/inet.jpeg" width="250" />
+<img src="https://github.com/yadukrishnankp/expense_upi_tracker/blob/master/assets/images/exet.jpeg" width="250" />
+<img src="https://github.com/yadukrishnankp/expense_upi_tracker/blob/master/assets/images/reet.jpeg" width="250" />
+<img src="https://github.com/yadukrishnankp/expense_upi_tracker/blob/master/assets/images/tret.jpeg" width="250" />
+
+
 </p>
 
 ---
